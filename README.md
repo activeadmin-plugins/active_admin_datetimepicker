@@ -20,31 +20,29 @@ Or install it yourself as:
 
 ## Usage
 
+Plugin  offers the `date_time_picker` input and `date_time_range` filter , which use the [XDSoft DateTime Picker gem](https://github.com/shekibobo/xdan-datetimepicker-rails).
+The `date_time_picker` input accepts many of the options available to the standard jQueryUI Datepicker. For example:
+
+ JS asset
+ ```//= require active_admin_datetimepicker```
+
+ CSS
+ ```@import "active_admin_datetimepicker";```
 
 
-+
-+plugin  offers the `date_time_picker` input and `date_time_range` filter , which use the [XDSoft DateTime Picker gem](https://github.com/shekibobo/xdan-datetimepicker-rails).
-+The `date_time_picker` input accepts many of the options available to the standard jQueryUI Datepicker. For example:
-+
-+ JS asset
-+ ```//= require active_admin_datetimepicker```
-+
-+ SASS
-+ ```@import "active_admin_datetimepicker";```
-+
-+```ruby
-+form do |f|
-+  f.input :starts_at, as: :datepicker, datepicker_options: { min_date: "2013-10-8",        max_date: "+3D" }
-+  f.input :ends_at,   as: :datepicker, datepicker_options: { min_date: 3.days.ago.to_date, max_date: "+1W +5D" }
-+end
-+```
-+
-+```ruby
-+filter :created_at, as: :date_time_range
-+```
-+
-+See [the datetimepicker documentation for more details](http://xdsoft.net/jqplugins/datetimepicker/).
-+
+```ruby
+form do |f|
+  f.input :starts_at, as: :datepicker, datepicker_options: { min_date: "2013-10-8",        max_date: "+3D" }
+  f.input :ends_at,   as: :datepicker, datepicker_options: { min_date: 3.days.ago.to_date, max_date: "+1W +5D" }
+end
+```
+
+```ruby
+    filter :created_at, as: :date_time_range
+```
+
+See [the datetimepicker documentation for more details](http://xdsoft.net/jqplugins/datetimepicker/).
+
 
 ## Development
 
