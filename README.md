@@ -2,6 +2,9 @@
 
 Adds ability to use XDSoft's DateTime picker as the date_time_picker input for forms, and date_time_range for filters
 
+
+![ActiveAdminDatetimepicker](https://raw.githubusercontent.com/ActiveAdminPlugins/activeadmin_datetimepicker/master/screen/screen.png "ActiveAdminDatetimepicker")
+
 ## Installation
 
 Add this line to your application's Gemfile:
