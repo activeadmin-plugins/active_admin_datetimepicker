@@ -1,9 +1,17 @@
 @import "jquery.xdan.datetimepicker";
 
 form.filter_form {
-  .filter_date_time_range {
-    input[type=text] {
-      width: $side-by-side-filter-input-width - 2;
+  .filter_form_field {
+    &.filter_date_time_range {
+      .seperator {
+        display: inline-block;
+        text-align: center;
+        width: $filter-field-seperator-width;
+      }
+
+      input[type=text] {
+        width: $side-by-side-filter-input-width - 2;
+      }
     }
   }
 }
