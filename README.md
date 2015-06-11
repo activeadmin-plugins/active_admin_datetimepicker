@@ -44,6 +44,19 @@ end
     filter :created_at, as: :date_time_range
 ```
 
+
+## Override behaviour in initializer
+```ruby
+# This if for front-end javascript side
+ActiveAdminDatetimepicker::Base.default_datetime_picker_options = {
+    format: 'Y-m-d H:i:s',
+    defaultDate: proc { DateTime.now.utc.strftime('%y-%m-%d') }
+}
+# This if for backend(Ruby)
+ActiveAdminDatetimepicker::Base.format = "%Y-%m-%d %H:%M:%S"
+```
+
+
 See [the datetimepicker documentation for more details](http://xdsoft.net/jqplugins/datetimepicker/).
 
 
