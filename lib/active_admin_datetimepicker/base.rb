@@ -1,11 +1,15 @@
 module ActiveAdminDatetimepicker
   module Base
-    def html_class
-      'date-time-picker'
+    mattr_accessor :default_datetime_picker_options do
+      {}
     end
 
-    def format
+    mattr_accessor :format do
       '%Y-%m-%d %H:%M'
+    end
+
+    def html_class
+      'date-time-picker'
     end
 
     def input_html_data
@@ -33,8 +37,23 @@ module ActiveAdminDatetimepicker
         # backport support both :datepicker_options AND :datetime_picker_options
         options = self.options.fetch(:datepicker_options, {})
         options = self.options.fetch(:datetime_picker_options, options)
-        Hash[options.map { |k, v| [k.to_s.camelcase(:lower), v] }]
+        options = Hash[options.map { |k, v| [k.to_s.camelcase(:lower), v] }]
+        _default_datetime_picker_options.merge(options)
       end
+    end
+
+    protected
+
+    def _default_datetime_picker_options
+      res = default_datetime_picker_options.map do |k, v|
+        if v.respond_to?(:call) || v.is_a?(Proc)
+          [k, v.call]
+        else
+          [k, v]
+        end
+      end
+      Hash[res]
     end
   end
 end
+
