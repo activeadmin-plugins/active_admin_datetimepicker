@@ -49,8 +49,7 @@ end
 ```ruby
 # This if for front-end javascript side
 ActiveAdminDatetimepicker::Base.default_datetime_picker_options = {
-    format: 'Y-m-d H:i:s',
-    defaultDate: proc { DateTime.now.utc.strftime('%y-%m-%d') }
+    defaultDate: proc { Time.current.strftime("%Y-%m-%d 00:00") }
 }
 # This if for backend(Ruby)
 ActiveAdminDatetimepicker::Base.format = "%Y-%m-%d %H:%M:%S"
