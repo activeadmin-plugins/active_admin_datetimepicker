@@ -28,7 +28,7 @@ module ActiveAdminDatetimepicker
 
     def input_value(input_name = nil)
       val = object.public_send(input_name || method)
-      return DateTime.new(val.year, val.month, val.day, val.hour, val.min).strftime(format) if val.is_a?(Time)
+      return DateTime.new(val.year, val.month, val.day, val.hour, val.min, val.sec).strftime(format) if val.is_a?(Time)
       val.to_s
     end
 
