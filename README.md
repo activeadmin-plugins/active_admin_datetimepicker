@@ -57,6 +57,19 @@ ActiveAdminDatetimepicker::Base.default_datetime_picker_options = {
 ActiveAdminDatetimepicker::Base.format = "%Y-%m-%d %H:%M:%S"
 ```
 
+## Change datetime format
+If you want to change format - you need to make sure that front-end and back-end formats are identical. And remember JS and Ruby datetime format has different syntax.
+
+Create configuration file '/config/initializers/init_datetimpicker.rb'
+
+```ruby
+# Example "11/03/2016 13:00"
+ActiveAdminDatetimepicker::Base.default_datetime_picker_options = {
+    format: 'd/m/Y H:i', # JS format
+    defaultTime: proc { Time.current.strftime('%H:00') } # not necessary
+}
+ActiveAdminDatetimepicker::Base.format = "%d/%m/%Y %H:%M" # Ruby format
+```
 
 See [the datetimepicker documentation for more details](http://xdsoft.net/jqplugins/datetimepicker/).
 
