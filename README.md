@@ -1,3 +1,5 @@
+[![Build Status](https://img.shields.io/travis/activeadmin-plugins/active_admin_datetimepicker.svg)](https://travis-ci.org/activeadmin-plugins/active_admin_datetimepicker)
+
 # ActiveAdminDatetimepicker
 
 Adds ability to use XDSoft's DateTime picker as the date_time_picker input for forms, and date_time_range for filters
