@@ -1,4 +1,4 @@
-#= require jquery.xdan.datetimepicker
+#= require jquery.xdan.datetimepicker.full
 
 @setupDateTimePicker = (container) ->
   defaults = {
