@@ -1,12 +1,9 @@
 module ActiveAdminDatetimepicker
   module Base
-    mattr_accessor :default_datetime_picker_options do
-      {}
-    end
-
-    mattr_accessor :format do
-      '%Y-%m-%d %H:%M'
-    end
+    mattr_accessor :default_datetime_picker_options
+    @@default_datetime_picker_options = {}
+    mattr_accessor :format
+    @@format = '%Y-%m-%d %H:%M'
 
     def html_class
       'date-time-picker'
