@@ -10,6 +10,14 @@ module ActiveAdmin
             options[:class] = html_class
           end
         end
+
+        def gt_input_name
+          "#{method}_gteq"
+        end
+
+        def lt_input_name
+          "#{method}_lteq"
+        end
       end
     end
   end
