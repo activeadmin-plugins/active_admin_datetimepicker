@@ -7,7 +7,7 @@ group :test do
   gem 'sprockets-rails', '2.3.3'
   gem 'rails', "#{ENV['RAILS'] || default_rails_version}"
   gem 'rspec-rails'
-  gem 'activeadmin', github: 'activeadmin', ref: '06aa8b2af692e46fc360832473ca63e23a70b3d4'
+  gem 'activeadmin', '1.1.0'
   gem 'coveralls', require: false # Test coverage website. Go to https://coveralls.io
   gem 'sass-rails'
   gem 'sqlite3'
