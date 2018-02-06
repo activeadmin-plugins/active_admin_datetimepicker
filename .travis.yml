@@ -2,8 +2,8 @@ script: bundle exec rspec spec
 cache: bundler
 env:
   matrix:
-    - RAILS=4.2.6
-    - RAILS=5.0.0
+    - RAILS=4.2.6 AA=1.1.0
+    - RAILS=5.0.0 AA=1.2.1
 rvm:
   - 2.2.6
   - 2.3.3

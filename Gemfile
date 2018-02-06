@@ -4,10 +4,11 @@ source 'https://rubygems.org'
 gemspec
 group :test do
   default_rails_version = '4.2.7'
+  default_activeadmin_version = '1.1.0'
   gem 'sprockets-rails', '2.3.3'
   gem 'rails', "#{ENV['RAILS'] || default_rails_version}"
   gem 'rspec-rails'
-  gem 'activeadmin', '1.1.0'
+  gem 'activeadmin', "#{ENV['AA'] || default_activeadmin_version}"
   gem 'coveralls', require: false # Test coverage website. Go to https://coveralls.io
   gem 'sass-rails'
   gem 'sqlite3'
