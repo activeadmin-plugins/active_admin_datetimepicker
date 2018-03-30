@@ -1,4 +1,6 @@
+[![Gem Version](https://badge.fury.io/rb/active_admin_datetimepicker.svg)](http://badge.fury.io/rb/active_admin_datetimepicker)
 [![Build Status](https://img.shields.io/travis/activeadmin-plugins/active_admin_datetimepicker.svg)](https://travis-ci.org/activeadmin-plugins/active_admin_datetimepicker)
+[![Coverage](https://coveralls.io/repos/activeadmin-plugins/active_admin_datetimepicker/badge.svg?branch=master)](https://coveralls.io/r/activeadmin-plugins/active_admin_datetimepicker)
 
 # ActiveAdminDatetimepicker
 
