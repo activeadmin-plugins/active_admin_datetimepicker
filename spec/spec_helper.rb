@@ -30,10 +30,12 @@ ActiveAdmin.application.authentication_method = false
 ActiveAdmin.application.current_user_method = false
 
 require 'rspec/rails'
-require 'support/admin'
 require 'capybara/rails'
 require 'capybara/rspec'
-require 'capybara/poltergeist'
+
+require 'support/admin'
+require 'support/capybara'
+#require "selenium/webdriver"
 
 
 RSpec.configure do |config|
@@ -51,34 +53,15 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  #config.before(:each, js: true) do
+  #  page.driver.browser.manage.window.maximize if page.driver.browser.respond_to?(:manage)
+  #end
 end
 
-
 Capybara.default_selector = :css
+Capybara.server = :webrick
 
 Capybara.configure do |config|
   config.match = :prefer_exact
   config.ignore_hidden_elements = false
 end
-
-# Capybara.javascript_driver = :selenium
-#
-# RSpec.configure do |config|
-#   config.before(:each, js: true) do
-#     page.driver.browser.manage.window.maximize  if page.driver.browser.respond_to?(:manage)
-#   end
-# end
-#
-
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, {
-    js_errors: true,
-    timeout: 80,
-    debug: true,
-    :phantomjs_options => ['--debug=no', '--load-images=no']
-
-  })
-end
-
-Capybara.javascript_driver = :poltergeist
-
