@@ -1,17 +1,14 @@
-JS_DRIVER = :selenium_chrome_headless
+Capybara.server = :webrick
 
-Capybara.default_driver = :rack_test
-Capybara.javascript_driver = JS_DRIVER
-Capybara.default_max_wait_time = 2
-
-RSpec.configure do |config|
-  config.before(:each) do |example|
-    Capybara.current_driver = JS_DRIVER if example.metadata[:js]
-    Capybara.current_driver = :selenium if example.metadata[:selenium]
-    Capybara.current_driver = :selenium_chrome if example.metadata[:selenium_chrome]
-  end
-
-  config.after(:each) do
-    Capybara.use_default_driver
-  end
+Capybara.configure do |config|
+  config.match = :prefer_exact
 end
+
+Capybara.register_driver :chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new(
+    args: %w[headless disable-gpu no-sandbox]
+  )
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.javascript_driver = :chrome

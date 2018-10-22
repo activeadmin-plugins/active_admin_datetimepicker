@@ -32,11 +32,10 @@ ActiveAdmin.application.current_user_method = false
 require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/rspec'
+require 'selenium-webdriver'
 
 require 'support/admin'
 require 'support/capybara'
-#require "selenium/webdriver"
-
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
@@ -45,23 +44,13 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean_with(:truncation)
   end
+
   config.before(:each) do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.start
   end
+
   config.after(:each) do
     DatabaseCleaner.clean
   end
-
-  #config.before(:each, js: true) do
-  #  page.driver.browser.manage.window.maximize if page.driver.browser.respond_to?(:manage)
-  #end
-end
-
-Capybara.default_selector = :css
-Capybara.server = :webrick
-
-Capybara.configure do |config|
-  config.match = :prefer_exact
-  config.ignore_hidden_elements = false
 end
