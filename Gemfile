@@ -6,8 +6,8 @@ group :test do
   default_rails_version = '5.2.1'
   default_activeadmin_version = '1.3.1'
 
-  gem 'rails', "#{ENV['RAILS'] || default_rails_version}"
-  gem 'activeadmin', "#{ENV['AA'] || default_activeadmin_version}"
+  gem 'rails', "~> #{ENV['RAILS'] || default_rails_version}"
+  gem 'activeadmin', "~> #{ENV['AA'] || default_activeadmin_version}"
 
   gem 'rspec-rails'
   gem 'coveralls', require: false # Test coverage website. Go to https://coveralls.io
