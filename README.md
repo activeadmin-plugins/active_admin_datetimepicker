@@ -4,14 +4,13 @@
 
 # ActiveAdminDatetimepicker
 
-Adds ability to use XDSoft's DateTime picker as the `date_time_picker` input for forms, and `date_time_range` for filters
-
+Adds XDSoft's DateTime picker as a `date_time_picker` input for forms, and `date_time_range` for filters.
 
 ![ActiveAdminDatetimepicker](https://raw.githubusercontent.com/ActiveAdminPlugins/activeadmin_datetimepicker/master/screen/screen.png "ActiveAdminDatetimepicker")
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 
 ```ruby
 gem 'active_admin_datetimepicker'
@@ -25,13 +24,13 @@ Or install it yourself as:
 
     $ gem install active_admin_datetimepicker
 
-Add following line into `app/assets/stylesheets/active_admin.css.scss`
+Add the following line into `app/assets/stylesheets/active_admin.css.scss`:
 
 ```css
 @import "active_admin_datetimepicker";
 ```
 
-Add following line into `app/assets/javascripts/active_admin.js.coffee`
+Add the following line into `app/assets/javascripts/active_admin.js.coffee`:
 
 ```coffee
 #= require active_admin_datetimepicker
@@ -40,7 +39,8 @@ Add following line into `app/assets/javascripts/active_admin.js.coffee`
 
 ## Usage
 
-Plugin  offers the `date_time_picker` input and `date_time_range` filter, which use the [XDSoft DateTime Picker gem](https://github.com/shekibobo/xdan-datetimepicker-rails).
+This plugin adds the `date_time_picker` input and `date_time_range` filter, which use the [XDSoft DateTime Picker gem](https://github.com/shekibobo/xdan-datetimepicker-rails).
+
 The `date_time_picker` input accepts many of the options available to the standard jQueryUI Datepicker. For example:
 
 ```ruby
@@ -57,19 +57,20 @@ The `date_time_picker` input accepts many of the options available to the standa
 ## Override behaviour in initializer
 
 ```ruby
-# This if for front-end javascript side
+# This if for the front-end JavaScript side
 ActiveAdminDatetimepicker::Base.default_datetime_picker_options = {
     defaultDate: proc { Time.current.strftime("%Y-%m-%d 00:00") }
 }
-# This if for backend(Ruby)
+# This if for the Ruby backend
 ActiveAdminDatetimepicker::Base.format = "%Y-%m-%d %H:%M:%S"
 ```
 
 ## Change datetime format
-If you want to change format - you need to make sure that front-end and back-end formats are identical.
-And remember JS and Ruby datetime format has different syntax.
 
-Create configuration file `/config/initializers/init_datetimpicker.rb`
+If you want to change the format you need to make sure that front-end and back-end formats are identical.
+And remember JS and Ruby datetime format have different syntaxes.
+
+Create configuration file `config/initializers/init_datetimepicker.rb`:
 
 ```ruby
 # Example "11/03/2016 13:00"
