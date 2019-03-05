@@ -6,16 +6,16 @@ group :test do
   default_rails_version = '5.2.1'
   default_activeadmin_version = '1.3.1'
 
-  gem 'rails', "~> #{ENV['RAILS'] || default_rails_version}"
   gem 'activeadmin', "~> #{ENV['AA'] || default_activeadmin_version}"
+  gem 'rails', "~> #{ENV['RAILS'] || default_rails_version}"
 
-  gem 'rspec-rails'
-  gem 'coveralls', require: false # Test coverage website. Go to https://coveralls.io
-  gem 'sass-rails'
-  gem 'sqlite3'
-  gem 'launchy'
-  gem 'database_cleaner'
   gem 'capybara'
-  gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'coveralls', require: false # Test coverage website. Go to https://coveralls.io
+  gem 'database_cleaner'
+  gem 'launchy'
+  gem 'rspec-rails'
+  gem 'sass-rails'
+  gem 'selenium-webdriver'
+  gem 'sqlite3'
 end

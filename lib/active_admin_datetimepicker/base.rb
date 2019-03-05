@@ -13,11 +13,11 @@ module ActiveAdminDatetimepicker
       {}
     end
 
-    def input_html_options(input_name = nil, placeholder = nil)
+    def input_html_options(input_name = nil, _placeholder = nil)
       options = {}
       options[:class] = [self.options[:class], html_class].compact.join(' ')
       options[:data] ||= input_html_data
-      options[:data].merge!(datepicker_options: datetime_picker_options)
+      options[:data][:datepicker_options] = datetime_picker_options
       options[:value] ||= input_value(input_name)
       options[:maxlength] = 19
       options
@@ -26,6 +26,7 @@ module ActiveAdminDatetimepicker
     def input_value(input_name = nil)
       val = object.public_send(input_name || method)
       return DateTime.new(val.year, val.month, val.day, val.hour, val.min, val.sec).strftime(format) if val.is_a?(Time)
+
       val.to_s
     end
 
@@ -53,4 +54,3 @@ module ActiveAdminDatetimepicker
     end
   end
 end
-

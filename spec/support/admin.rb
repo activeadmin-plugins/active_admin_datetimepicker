@@ -1,5 +1,4 @@
-def add_author_resource(options = {}, &block)
-
+def add_author_resource(_options = {})
   ActiveAdmin.register Author do
     config.filters = true
 
@@ -17,5 +16,4 @@ def add_author_resource(options = {}, &block)
     end
   end
   Rails.application.reload_routes!
-
 end
