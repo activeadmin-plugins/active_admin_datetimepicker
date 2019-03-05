@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Creates a test rails app for the specs to run against'
 task :setup do
   require 'rails/version'

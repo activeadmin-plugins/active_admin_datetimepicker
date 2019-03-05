@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def add_author_resource(_options = {})
   ActiveAdmin.register Author do
     config.filters = true

@@ -1,0 +1,14 @@
+Rails:
+  Enabled: true
+
+AllCops:
+  TargetRubyVersion: 2.6
+
+Documentation:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  EnforcedStyle: context_dependent
+
+Layout/MultilineMethodCallBraceLayout:
+  EnforcedStyle: same_line

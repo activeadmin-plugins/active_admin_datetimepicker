@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'activeadmin'
 require 'xdan-datetimepicker-rails'
 require 'active_admin_datetimepicker/version'

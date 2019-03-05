@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Rails template to build the sample app for specs
 
 generate :model, 'author name:string{10}:uniq last_name:string birthday:date'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActiveAdmin
   module Inputs
     class DateTimePickerInput < ::Formtastic::Inputs::StringInput
