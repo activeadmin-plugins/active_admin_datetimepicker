@@ -20,6 +20,9 @@ module ActiveAdminDatetimepicker
       options[:data].merge!(datepicker_options: datetime_picker_options)
       options[:value] ||= input_value(input_name)
       options[:maxlength] = 19
+
+      # Add placeholder functionality
+      options[:placeholder] = placeholder
       options
     end
 
@@ -53,4 +56,3 @@ module ActiveAdminDatetimepicker
     end
   end
 end
-
