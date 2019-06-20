@@ -38,6 +38,8 @@ describe 'authors index', type: :feature, js: true do
 
       expect(page.find('input#q_birthday_gteq').value).to start_with(date_from)
       expect(page.find('input#q_birthday_lteq').value).to start_with(date_to)
+      expect(page).to have_css('input#q_birthday_gteq[placeholder="From"]')
+      expect(page).to have_css('input#q_birthday_lteq[placeholder="To"]')
     end
   end
 
@@ -59,6 +61,7 @@ describe 'authors index', type: :feature, js: true do
     it 'can set birthday'  do
       date_birthday = Date.today.beginning_of_month.strftime("%Y-%m-%d")
       expect(page.find('#author_birthday').value).to start_with(date_birthday)
+      expect(page).to have_css('#author_birthday[placeholder="Formtastic placeholder"]')
     end
   end
 

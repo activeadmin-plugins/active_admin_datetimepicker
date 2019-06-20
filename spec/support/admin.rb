@@ -10,7 +10,7 @@ def add_author_resource(options = {}, &block)
 
       f.inputs 'General' do
         f.input :name
-        f.input :birthday, as: :date_time_picker
+        f.input :birthday, as: :date_time_picker, input_html: { placeholder: 'Formtastic placeholder' }
       end
 
       f.actions
