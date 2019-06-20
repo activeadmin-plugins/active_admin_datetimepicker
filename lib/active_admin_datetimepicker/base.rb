@@ -14,13 +14,14 @@ module ActiveAdminDatetimepicker
     end
 
     def input_html_options(input_name = nil, placeholder = nil)
-      options = {}
-      options[:class] = [self.options[:class], html_class].compact.join(' ')
-      options[:data] ||= input_html_data
-      options[:data].merge!(datepicker_options: datetime_picker_options)
-      options[:value] ||= input_value(input_name)
-      options[:maxlength] = 19
-      options
+      super().tap do |options|
+        options[:class] = [self.options[:class], html_class].compact.join(' ')
+        options[:data] ||= input_html_data
+        options[:data].merge!(datepicker_options: datetime_picker_options)
+        options[:value] ||= input_value(input_name)
+        options[:maxlength] = 19
+        options[:placeholder] = placeholder unless placeholder.nil?
+      end
     end
 
     def input_value(input_name = nil)
