@@ -4,6 +4,7 @@ def add_author_resource(options = {}, &block)
     config.filters = true
 
     filter :birthday, as: :date_time_range
+    filter :created_at, as: :date_time_range
 
     form do |f|
       f.semantic_errors *f.object.errors.keys
