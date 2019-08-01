@@ -18,20 +18,25 @@ module ActiveAdminDatetimepicker
         options[:class] = [self.options[:class], html_class].compact.join(' ')
         options[:data] ||= input_html_data
         options[:data].merge!(datepicker_options: datetime_picker_options)
-        options[:value] = input_value(input_name)
+        options[:value] = input_value(input_name, options)
         options[:maxlength] = 19
         options[:placeholder] = placeholder unless placeholder.nil?
       end
     end
 
     def input_value(input_name = nil)
+      return options[:value] if options[:value].present?
+
       val = object.public_send(input_name || method)
-      if val.nil?
+
+      return nil if val.nil?
+
+      if column.type == :date
         val
-      elsif column.type == :date
-        val
-      else
+      elsif column.type == :datetime
         DateTime.new(val.year, val.month, val.day, val.hour, val.min, val.sec).strftime(format)
+      else
+        val.to_s
       end
     end
 
