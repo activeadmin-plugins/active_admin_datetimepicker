@@ -30,10 +30,10 @@ Add the following line into `app/assets/stylesheets/active_admin.css.scss`:
 @import "active_admin_datetimepicker";
 ```
 
-Add the following line into `app/assets/javascripts/active_admin.js.coffee`:
+Add the following line into `app/assets/javascripts/active_admin.js`:
 
-```coffee
-#= require active_admin_datetimepicker
+```javascript
+//= require active_admin_datetimepicker
 ```
 
 
