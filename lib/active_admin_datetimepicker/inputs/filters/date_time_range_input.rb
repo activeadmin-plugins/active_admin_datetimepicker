@@ -11,6 +11,14 @@ module ActiveAdmin
           end
         end
 
+        def gt_input_name
+          column && column.type == :date ? super : "#{method}_gteq_datetime_picker"
+        end
+
+        def lt_input_name
+          column && column.type == :date ? super : "#{method}_lteq_datetime_picker"
+        end
+
       end
     end
   end

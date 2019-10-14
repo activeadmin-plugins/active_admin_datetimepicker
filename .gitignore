@@ -1,4 +1,6 @@
 Gemfile.lock
 coverage/
-spec/rails/rails-5.2.1/
+spec/rails/rails-*
 pkg
+.bundle
+vendor/bundl
