@@ -10,6 +10,7 @@ group :test do
   gem 'rails', "~> #{ENV['RAILS'] || default_rails_version}"
   gem 'activeadmin', "~> #{ENV['AA'] || default_activeadmin_version}"
 
+  gem 'sprockets-rails', '3.0.4'
   gem 'rspec-rails'
   gem 'coveralls', require: false # Test coverage website. Go to https://coveralls.io
   gem 'sass-rails'
