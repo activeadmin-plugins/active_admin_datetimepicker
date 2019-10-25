@@ -18,7 +18,6 @@ group :test do
   gem 'launchy'
   gem 'database_cleaner'
   gem 'capybara'
-  gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
+  gem 'webdrivers'
   gem 'byebug'
 end
