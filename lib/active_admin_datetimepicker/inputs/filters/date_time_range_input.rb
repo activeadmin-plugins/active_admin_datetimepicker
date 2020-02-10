@@ -11,6 +11,12 @@ module ActiveAdmin
           end
         end
 
+        # This method is for compatibility for ActiveAdmin 2.6
+        def input_html_options_for(input_name, placeholder)
+          super.merge placeholder: placeholder,
+                      value: input_value(input_name)
+        end
+
         def gt_input_name
           column && column.type == :date ? super : "#{method}_gteq_datetime_picker"
         end

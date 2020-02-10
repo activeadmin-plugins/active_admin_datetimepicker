@@ -71,6 +71,9 @@ describe 'authors index', type: :feature, js: true do
         page.find('.xdsoft_datetimepicker', visible: true)
             .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
 
+        @value_from = page.find('#q_created_at_gteq_datetime_picker').value
+        @value_to = page.find('#q_created_at_lteq_datetime_picker').value
+
         page.find('#sidebar input[type=submit]').click
         page.has_css?('h4', text: 'Current filters:')
       end
@@ -80,9 +83,13 @@ describe 'authors index', type: :feature, js: true do
         expect(page).not_to have_text('from-the-future')
       end
 
-      it 'submit filter form' do
+      it 'input#value and placeholder is the same as before form submit' do
         # created_at(Timestamp type) should contain Hours:Minutes, as selected before submit
-        expect(page.find('#q_created_at_gteq_datetime_picker').value).to match(/\A\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}\z/)
+        expect(page.find('#q_created_at_gteq_datetime_picker').value).to match(@value_from)
+        expect(page.find('#q_created_at_lteq_datetime_picker').value).to match(@value_to)
+
+        expect(page).to have_css('#q_created_at_gteq_datetime_picker[placeholder=From]')
+        expect(page).to have_css('#q_created_at_lteq_datetime_picker[placeholder=To]')
       end
     end
   end
