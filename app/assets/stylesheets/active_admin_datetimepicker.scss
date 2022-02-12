@@ -1,3 +1,8 @@
+// activeadmin v2.10.x compatibility
+$sidebar-inner-content-width: $sidebar-width - ($section-padding * 2) !default;
+$filter-field-seperator-width: 12px !default;
+$side-by-side-filter-input-width: ($sidebar-inner-content-width * 0.5) - ($text-input-horizontal-padding * 2) - $filter-field-seperator-width !default;
+
 form.filter_form {
   .filter_form_field {
     &.filter_date_time_range {

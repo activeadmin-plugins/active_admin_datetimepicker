@@ -27,6 +27,10 @@ jobs:
             activeadmin: '1.4.0'
           - rails: '6.0.0'
             activeadmin: '2.0.0'
+        include:
+          - rails: '6.0.0'
+            ruby: 2.6
+            activeadmin: '2.10.0'
     env:
       RAILS: ${{ matrix.rails }}
       AA: ${{ matrix.activeadmin }}
