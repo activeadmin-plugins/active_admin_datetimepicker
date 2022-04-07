@@ -92,5 +92,45 @@ describe 'authors index', type: :feature, js: true do
         expect(page).to have_css('#q_created_at_lteq_datetime_picker[placeholder=To]')
       end
     end
+
+    context 'filter by virtual attribute last_seen_at - without column&type properties (search by updated_at)' do
+      let!(:first_author) { Author.create!(name: 'Ren', last_name: 'current', updated_at: Time.now.to_s(:db)) }
+      let!(:second_author) { Author.create!(name: 'Rey', last_name: 'future', updated_at: 21.days.from_now.to_s(:db)) }
+
+      before do
+        # chose 01 and 20 day of the current month
+        page.find('input#q_last_seen_at_gteq_datetime_picker').click
+        page.find('.xdsoft_datetimepicker', visible: true)
+            .find('.xdsoft_calendar td.xdsoft_date[data-date="1"]').click
+        page.find('.xdsoft_datetimepicker', visible: true)
+            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
+
+        page.find('input#q_last_seen_at_lteq_datetime_picker').click
+        page.find('.xdsoft_datetimepicker', visible: true)
+            .find('.xdsoft_calendar td.xdsoft_date[data-date="20"]').click
+        page.find('.xdsoft_datetimepicker', visible: true)
+            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
+
+        @value_from = page.find('#q_last_seen_at_gteq_datetime_picker').value
+        @value_to = page.find('#q_last_seen_at_lteq_datetime_picker').value
+
+        page.find('#sidebar input[type=submit]').click
+        page.has_css?('h4', text: 'Current filters:')
+      end
+
+      it 'should filter records properly' do
+        expect(page).to have_text(first_author.name)
+        expect(page).not_to have_text(second_author.name)
+      end
+
+      it 'input#value and placeholder is the same as before form submit' do
+        # last_seen_at (without typecasting just a string) should contain Hours:Minutes, as selected before submit
+        expect(page.find('#q_last_seen_at_gteq_datetime_picker').value).to match(@value_from)
+        expect(page.find('#q_last_seen_at_lteq_datetime_picker').value).to match(@value_to)
+
+        expect(page).to have_css('#q_last_seen_at_gteq_datetime_picker[placeholder=From]')
+        expect(page).to have_css('#q_last_seen_at_lteq_datetime_picker[placeholder=To]')
+      end
+    end
   end
 end
