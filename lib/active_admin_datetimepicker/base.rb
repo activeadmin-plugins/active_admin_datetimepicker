@@ -26,13 +26,13 @@ module ActiveAdminDatetimepicker
 
     def input_value(input_name = nil)
       val = object.public_send(input_name || method)
-      if val.nil?
-        val
-      elsif column.type == :date
-        val
-      else
-        DateTime.new(val.year, val.month, val.day, val.hour, val.min, val.sec).strftime(format)
-      end
+      val.is_a?(Date) ? val : parse_datetime(val)
+    end
+
+    def parse_datetime(val)
+      DateTime.parse(val.to_s).strftime(format)
+    rescue ArgumentError
+      nil
     end
 
     def datetime_picker_options
