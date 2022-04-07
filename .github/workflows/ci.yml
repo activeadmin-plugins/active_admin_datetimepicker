@@ -17,14 +17,11 @@ jobs:
           - '5.2.0'
           - '6.0.0'
         activeadmin:
-          - '1.4.0'
           - '2.0.0'
           - '2.6.0'
         exclude:
           - rails: '5.2.0'
             activeadmin: '2.6.0'
-          - rails: '6.0.0'
-            activeadmin: '1.4.0'
           - rails: '6.0.0'
             activeadmin: '2.0.0'
     env:
