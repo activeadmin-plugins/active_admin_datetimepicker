@@ -27,15 +27,9 @@ inject_into_file "app/assets/stylesheets/active_admin.scss",
                  "@import \"active_admin_datetimepicker\";\n",
                  after: "@import \"active_admin/base\";\n"
 
-if File.file?("app/assets/javascripts/active_admin.js.coffee")
-  inject_into_file "app/assets/javascripts/active_admin.js.coffee",
-                   "#= require active_admin_datetimepicker\n",
-                   after: "#= require active_admin/base\n"
-else
-  inject_into_file "app/assets/javascripts/active_admin.js",
-                  "//= require active_admin_datetimepicker\n",
-                  after: "//= require active_admin/base\n"
-end
+inject_into_file "app/assets/javascripts/active_admin.js",
+                 "//= require active_admin_datetimepicker\n",
+                 after: "//= require active_admin/base\n"
 
 run "rm -r test"
 run "rm -r spec"
