@@ -39,7 +39,7 @@ Add the following line into `app/assets/javascripts/active_admin.js`:
 
 ## Usage
 
-This plugin adds the `date_time_picker` input and `date_time_range` filter, which use the [XDSoft DateTime Picker gem](https://github.com/shekibobo/xdan-datetimepicker-rails).
+This plugin adds the `date_time_picker` input and `date_time_range` filter, which use the [XDSoft DateTime Picker](https://github.com/xdan/datetimepicker/).
 
 The `date_time_picker` input accepts many of the options available to the standard jQueryUI Datepicker. For example:
 

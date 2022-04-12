@@ -1,5 +1,4 @@
 require 'activeadmin'
-require 'xdan-datetimepicker-rails'
 require 'active_admin_datetimepicker/version'
 require 'active_admin_datetimepicker/base'
 require 'active_admin_datetimepicker/inputs/date_time_picker_input'
