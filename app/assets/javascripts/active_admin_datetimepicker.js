@@ -1,4 +1,4 @@
-//= require jquery.xdan.datetimepicker.full
+//= require vendor/jquery.datetimepicker.full
 
 function setupDateTimePicker(container) {
   const defaults = {
