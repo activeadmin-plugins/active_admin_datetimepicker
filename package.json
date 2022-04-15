@@ -1,0 +1,35 @@
+{
+  "name": "@activeadmin-plugins/active_admin_datetimepicker",
+  "version": "1.0.0",
+  "description": "Integrate jQuery xdan datetimepicker plugin to ActiveAdmin",
+  "main": "src/active_admin_datetimepicker.js",
+  "style": "src/active_admin_datetimepicker.scss",
+  "author": "Igor Fedoronchuk <fedoronchuk@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/activeadmin-plugins/active_admin_datetimepicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/activeadmin-plugins/active_admin_datetimepicker/issues"
+  },
+  "homepage": "https://github.com/activeadmin-plugins/active_admin_datetimepicker#readme",
+  "keywords": [
+    "active",
+    "admin",
+    "datetimepicker"
+  ],
+  "files": [
+    "src/**/*",
+    "!src/*.bak"
+  ],
+  "scripts": {
+    "prepare_src": "rm -rf src && cp -R app/assets/javascripts/ src && cp -R app/assets/stylesheets/ src",
+    "prepare_import": "sed -i.bak 1s/'\\/\\/\\= require vendor\\/jquery.datetimepicker.full'/\"import '.\\/vendor\\/jquery.datetimepicker.full';\"/ src/active_admin_datetimepicker.js",
+    "prepublishOnly": "npm run prepare_src && npm run prepare_import"
+  },
+  "dependencies": {
+    "jquery-mousewheel": ">= 3.1.13"
+  }
+}

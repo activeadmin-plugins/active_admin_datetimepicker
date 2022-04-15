@@ -1,4 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/active_admin_datetimepicker.svg)](http://badge.fury.io/rb/active_admin_datetimepicker)
+[![NPM Version](https://badge.fury.io/js/active_admin_datetimepicker.svg)](https://badge.fury.io/js/active_admin_datetimepicker)
+[![npm](https://img.shields.io/npm/dm/active_admin_datetimepicker.svg)](https://www.npmjs.com/package/@activeadmin-plugins/active_admin_datetimepicker)
 [![Build Status](https://img.shields.io/travis/activeadmin-plugins/active_admin_datetimepicker.svg)](https://travis-ci.org/activeadmin-plugins/active_admin_datetimepicker)
 [![Coverage](https://coveralls.io/repos/activeadmin-plugins/active_admin_datetimepicker/badge.svg?branch=master)](https://coveralls.io/r/activeadmin-plugins/active_admin_datetimepicker)
 
@@ -24,7 +26,8 @@ Or install it yourself as:
 
     $ gem install active_admin_datetimepicker
 
-Add the following line into `app/assets/stylesheets/active_admin.css.scss`:
+##### Using assets via Sprockets
+Add the following line into `app/assets/stylesheets/active_admin.scss`:
 
 ```css
 @import "active_admin_datetimepicker";
@@ -36,6 +39,38 @@ Add the following line into `app/assets/javascripts/active_admin.js`:
 //= require active_admin_datetimepicker
 ```
 
+##### Using assets via Webpacker (or any other assets bundler) as a NPM module (Yarn package)
+
+Execute:
+
+    $ npm i @activeadmin-plugins/active_admin_datetimepicker
+
+Or
+
+    $ yarn add @activeadmin-plugins/active_admin_datetimepicker
+
+Or add manually to `package.json`:
+
+```
+"dependencies": {
+  "@activeadmin-plugins/active_admin_datetimepicker": "1.0.0"
+}
+```
+and execute:
+
+    $ yarn
+
+Add the following line into `app/assets/javascripts/active_admin.js`:
+
+```javascript
+import '@activeadmin-plugins/active_admin_datetimepicker';
+```
+
+Add the following line into `app/assets/stylesheets/active_admin.scss`:
+
+```css
+@import '@activeadmin-plugins/active_admin_datetimepicker';
+```
 
 ## Usage
 
