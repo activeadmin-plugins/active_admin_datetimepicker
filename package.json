@@ -1,6 +1,6 @@
 {
   "name": "@activeadmin-plugins/active_admin_datetimepicker",
-  "version": "0.7.4",
+  "version": "1.0.0",
   "description": "Integrate jQuery xdan datetimepicker plugin to ActiveAdmin",
   "main": "src/active_admin_datetimepicker.js",
   "style": "src/active_admin_datetimepicker.scss",

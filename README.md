@@ -53,7 +53,7 @@ Or add manually to `package.json`:
 
 ```
 "dependencies": {
-  "@activeadmin-plugins/active_admin_datetimepicker": "0.7.4"
+  "@activeadmin-plugins/active_admin_datetimepicker": "1.0.0"
 }
 ```
 and execute:
