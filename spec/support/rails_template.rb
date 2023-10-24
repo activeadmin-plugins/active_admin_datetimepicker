@@ -3,8 +3,8 @@
 generate :model, 'author name:string{10}:uniq last_name:string birthday:date'
 generate :model, 'post title:string:uniq body:text author:references'
 
-#Add validation
-inject_into_file "app/models/author.rb", "  validates_presence_of :name\n  validates_uniqueness_of :last_name\n\n  attr_accessor :last_seen_at\n  ransacker :last_seen_at do\n    Arel.sql('updated_at')\n  end\n", after: "ApplicationRecord\n"
+# Add validation
+inject_into_file "app/models/author.rb", "  validates_presence_of :name\n  validates_uniqueness_of :last_name\n\n  attr_accessor :last_seen_at\n  ransacker :last_seen_at do\n    Arel.sql('updated_at')\n  end\n  def self.ransackable_attributes(auth_object = nil)\n    attribute_names\n  end\n  def self.ransackable_associations(auth_object = nil)\n    []\n  end\n", after: "ApplicationRecord\n"
 inject_into_file "app/models/post.rb", "   validates_presence_of :author\n", after: ":author\n"
 
 # Configure default_url_options in test environment
