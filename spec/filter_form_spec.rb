@@ -49,11 +49,11 @@ describe 'authors index', type: :feature, js: true do
       before do
         Author.create!(name: "Ren",
                        last_name: "from-20-day-of-month",
-                       created_at: (Time.now.change(day: 20) - 1.hour).to_fs(:db))
+                       created_at: (Time.now.change(day: 20) - 1.hour).to_formatted_s(:db))
 
         Author.create!(name: "Rey",
                        last_name: "from-the-future",
-                       created_at: (Time.now.change(day: 20) + 2.hours).to_fs(:db))
+                       created_at: (Time.now.change(day: 20) + 2.hours).to_formatted_s(:db))
 
         # chose 01 and 20 day of the current month
 
@@ -94,8 +94,8 @@ describe 'authors index', type: :feature, js: true do
     end
 
     context 'filter by virtual attribute last_seen_at - without column&type properties (search by updated_at)' do
-      let!(:first_author) { Author.create!(name: 'Ren', last_name: 'current', updated_at: Time.now.to_fs(:db)) }
-      let!(:second_author) { Author.create!(name: 'Rey', last_name: 'future', updated_at: 21.days.from_now.to_fs(:db)) }
+      let!(:first_author) { Author.create!(name: 'Ren', last_name: 'current', updated_at: Time.now.to_formatted_s(:db)) }
+      let!(:second_author) { Author.create!(name: 'Rey', last_name: 'future', updated_at: 21.days.from_now.to_formatted_s(:db)) }
 
       before do
         # chose 01 and 20 day of the current month

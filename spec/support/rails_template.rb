@@ -3,17 +3,51 @@
 generate :model, 'author name:string{10}:uniq last_name:string birthday:date'
 generate :model, 'post title:string:uniq body:text author:references'
 
-# Add validation
-inject_into_file "app/models/author.rb", "  validates_presence_of :name\n  validates_uniqueness_of :last_name\n\n  attr_accessor :last_seen_at\n  ransacker :last_seen_at do\n    Arel.sql('updated_at')\n  end\n  def self.ransackable_attributes(auth_object = nil)\n    attribute_names\n  end\n  def self.ransackable_associations(auth_object = nil)\n    []\n  end\n", after: "ApplicationRecord\n"
-inject_into_file "app/models/post.rb", "   validates_presence_of :author\n", after: ":author\n"
+# Compatibility with old ransack
+inject_into_file "app/models/application_record.rb", after: "primary_abstract_class\n" do
+  <<-STRING
+
+    def self.ransackable_attributes(auth_object=nil)
+      if respond_to?(:authorizable_ransackable_attributes)
+        authorizable_ransackable_attributes
+      else
+        super
+      end
+    end
+
+    def self.ransackable_associations(auth_object=nil)
+      if respond_to?(:authorizable_ransackable_associations)
+        authorizable_ransackable_associations
+      else
+        super
+      end
+    end
+  STRING
+end
+
+# Virtual attributes
+inject_into_file "app/models/author.rb", after: "ApplicationRecord\n" do
+  <<-STRING
+  validates_presence_of :name
+  validates_uniqueness_of :last_name
+
+  attr_accessor :last_seen_at
+
+  ransacker :last_seen_at do
+    Arel.sql('updated_at')
+  end
+  STRING
+end
 
 # Configure default_url_options in test environment
-inject_into_file "config/environments/test.rb", "  config.action_mailer.default_url_options = { :host => 'example.com' }\n", after: "config.cache_classes = true\n"
+inject_into_file "config/environments/test.rb", after: "config.cache_classes = true\n" do
+  "  config.action_mailer.default_url_options = { :host => 'example.com' }\n"
+end
 
 # Add our local Active Admin to the load path
-inject_into_file "config/environment.rb",
-                 "\n$LOAD_PATH.unshift('#{File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'lib'))}')\nrequire \"active_admin\"\n",
-                 after: "require File.expand_path('../application', __FILE__)"
+inject_into_file "config/environment.rb", after: "require File.expand_path('../application', __FILE__)" do
+  "\n$LOAD_PATH.unshift('#{File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'lib'))}')\nrequire \"active_admin\"\n"
+end
 
 run "rm Gemfile"
 
@@ -23,13 +57,13 @@ generate :'active_admin:install --skip-users'
 generate :'formtastic:install'
 
 # Install active_admin_date_time_datetimepicker assets
-inject_into_file "app/assets/stylesheets/active_admin.scss",
-                 "@import \"active_admin_datetimepicker\";\n",
-                 after: "@import \"active_admin/base\";\n"
+inject_into_file "app/assets/stylesheets/active_admin.scss" do
+  "@import \"active_admin_datetimepicker\";\n"
+end
 
-inject_into_file "app/assets/javascripts/active_admin.js",
-                 "//= require active_admin_datetimepicker\n",
-                 after: "//= require active_admin/base\n"
+inject_into_file "app/assets/javascripts/active_admin.js" do
+  "//= require active_admin_datetimepicker\n"
+end
 
 run "rm -r test"
 run "rm -r spec"
