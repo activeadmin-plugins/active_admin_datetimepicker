@@ -19,5 +19,5 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activeadmin", ">= 2.0", "<= 3.1"
+  spec.add_dependency "activeadmin", ">= 2.14.0", "< 4.0"
 end

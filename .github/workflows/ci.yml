@@ -11,15 +11,21 @@ jobs:
     strategy:
       matrix:
         include:
-          - ruby: 2.6
-            rails: '6.0.2'
-            activeadmin: '2.6.0'
-          - ruby: 2.7
-            rails: '7.0.8'
-            activeadmin: '2.13.0'
-          - ruby: 3.2
+          - ruby: '3.0.0'
+            rails: '6.1.0'
+            activeadmin: '2.14.0'
+          - ruby: '3.0.0'
+            rails: '6.1.0'
+            activeadmin: '3.0.0'
+          - ruby: '3.0.0'
+            rails: '7.0.0'
+            activeadmin: '3.0.0'
+          - ruby: '3.1.0'
             rails: '7.1.0'
             activeadmin: '3.1.0'
+          - ruby: '3.2.0'
+            rails: '7.1.0'
+            activeadmin: '3.2.0'
     env:
       RAILS: ${{ matrix.rails }}
       AA: ${{ matrix.activeadmin }}

@@ -31,6 +31,14 @@ inject_into_file "app/models/author.rb", after: "ApplicationRecord\n" do
   validates_presence_of :name
   validates_uniqueness_of :last_name
 
+  def self.ransackable_attributes(auth_object=nil)
+    if respond_to?(:authorizable_ransackable_attributes)
+      authorizable_ransackable_attributes
+    else
+      %w(birthday created_at last_seen_at updated_at)
+    end
+  end
+
   attr_accessor :last_seen_at
 
   ransacker :last_seen_at do
