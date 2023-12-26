@@ -119,6 +119,8 @@ describe 'authors index', type: :feature, js: true do
       end
 
       it 'should filter records properly' do
+        puts @first_author.inspect
+        puts @second_author.inspect
         expect(page).to have_text(@first_author.name)
         expect(page).not_to have_text(@second_author.name)
       end
