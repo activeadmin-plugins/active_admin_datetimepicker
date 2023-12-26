@@ -24,6 +24,11 @@ jobs:
           - '3.0.0'
           - '3.1.0'
           - '3.2.0'
+        exclude:
+          - rails: '7.1.0'
+            activeadmin: '2.14.0'
+          - rails: '7.1.0'
+            activeadmin: '3.0.0'
     env:
       RAILS: ${{ matrix.rails }}
       AA: ${{ matrix.activeadmin }}
