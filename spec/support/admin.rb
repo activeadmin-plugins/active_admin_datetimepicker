@@ -1,6 +1,7 @@
 def add_author_resource(options = {}, &block)
-
   ActiveAdmin.register Author do
+    permit_params :name, :birthday
+
     config.filters = true
 
     filter :birthday, as: :date_time_range
@@ -8,7 +9,7 @@ def add_author_resource(options = {}, &block)
     filter :last_seen_at, as: :date_time_range
 
     form do |f|
-      f.semantic_errors *f.object.errors.keys
+      f.semantic_errors
 
       f.inputs 'General' do
         f.input :name
@@ -18,6 +19,6 @@ def add_author_resource(options = {}, &block)
       f.actions
     end
   end
-  Rails.application.reload_routes!
 
+  Rails.application.reload_routes!
 end
