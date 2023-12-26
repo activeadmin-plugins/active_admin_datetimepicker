@@ -95,8 +95,9 @@ describe 'authors index', type: :feature, js: true do
 
     context 'filter by virtual attribute last_seen_at - without column&type properties (search by updated_at)' do
       before do
-        @first_author = Author.create!(name: 'Ren', last_name: 'current', updated_at: Time.now.to_formatted_s(:db))
-        @second_author = Author.create!(name: 'Rey', last_name: 'future', updated_at: 22.days.from_now.to_formatted_s(:db))
+        @first_author = Author.create!(name: 'Ren', last_name: 'One', updated_at: Time.now.change(day: 1).to_formatted_s(:db))
+        @second_author = Author.create!(name: 'Ron', last_name: 'Two', updated_at: Time.now.change(day: 20).to_formatted_s(:db))
+        @third_author = Author.create!(name: 'Rey', last_name: 'future', updated_at: Time.now.change(day: 21).to_formatted_s(:db))
 
         # chose 01 and 20 day of the current month
         page.find('input#q_last_seen_at_gteq_datetime_picker').click
@@ -118,11 +119,10 @@ describe 'authors index', type: :feature, js: true do
         page.has_css?('h4', text: 'Current filters:')
       end
 
-      it 'should filter records properly' do
-        puts @first_author.inspect
-        puts @second_author.inspect
+      it 'finds the first and second authors, but not the third one, because he is outside of the filtered dates' do
         expect(page).to have_text(@first_author.name)
-        expect(page).not_to have_text(@second_author.name)
+        expect(page).to have_text(@second_author.name)
+        expect(page).not_to have_text(@third_author.name)
       end
 
       it 'input#value and placeholder is the same as before form submit' do
