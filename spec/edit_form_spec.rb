@@ -12,11 +12,12 @@ describe 'authors index', type: :feature, js: true do
 
     before do
       page.find('#author_birthday').click
+      sleep 0.3
 
-      page.find('.xdsoft_datetimepicker', visible: true)
-          .find('.xdsoft_calendar td.xdsoft_date[data-date="1"]').click
-      page.find('.xdsoft_datetimepicker', visible: true)
-          .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
+      picker = page.find('.xdsoft_datetimepicker', visible: true)
+      picker.find('.xdsoft_calendar td.xdsoft_date[data-date="1"]', match: :first).click
+      sleep 0.2
+      picker.find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
     end
 
     it 'can set birthday'  do

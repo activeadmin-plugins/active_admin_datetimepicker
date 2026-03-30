@@ -1,7 +1,12 @@
 # Rails template to build the sample app for specs
 
-generate :model, 'author name:string{10}:uniq last_name:string birthday:date'
-generate :model, 'post title:string:uniq body:text author:references'
+# Ensure Sprockets manifest exists (required by Rails 8+)
+FileUtils.mkdir_p("app/assets/config")
+File.write("app/assets/config/manifest.js",
+  "//= link_directory ../javascripts .js\n//= link_directory ../stylesheets .css\n")
+
+generate :model, 'author name:string{10}:uniq last_name:string birthday:date --force'
+generate :model, 'post title:string:uniq body:text author:references --force'
 
 # Compatibility with old ransack
 inject_into_file "app/models/application_record.rb", after: "primary_abstract_class\n" do
@@ -47,24 +52,17 @@ inject_into_file "app/models/author.rb", after: "ApplicationRecord\n" do
   STRING
 end
 
-# Configure default_url_options in test environment
-inject_into_file "config/environments/test.rb", after: "config.cache_classes = true\n" do
-  "  config.action_mailer.default_url_options = { :host => 'example.com' }\n"
-end
-
-# Add our local Active Admin to the load path
-inject_into_file "config/environment.rb", after: "require File.expand_path('../application', __FILE__)" do
-  "\n$LOAD_PATH.unshift('#{File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'lib'))}')\nrequire \"active_admin\"\n"
-end
-
-run "rm Gemfile"
+# Add our local Active Admin to the load path (Rails 7.1+ uses require_relative)
+gsub_file "config/environment.rb",
+  'require_relative "application"',
+  "require_relative \"application\"\n$LOAD_PATH.unshift('#{File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'lib'))}')\nrequire \"active_admin\"\n"
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 generate :'active_admin:install --skip-users'
 generate :'formtastic:install'
 
-# Install active_admin_date_time_datetimepicker assets
+# Install active_admin_datetimepicker assets
 inject_into_file "app/assets/stylesheets/active_admin.scss" do
   "@import \"active_admin_datetimepicker\";\n"
 end
@@ -73,9 +71,9 @@ inject_into_file "app/assets/javascripts/active_admin.js" do
   "//= require active_admin_datetimepicker\n"
 end
 
-run "rm -r test"
-run "rm -r spec"
-
+run "rm -rf test"
 route "root :to => 'admin/dashboard#index'"
-
 rake "db:migrate"
+
+# Remove Gemfile last so rake/route/generate work during template
+run "rm -f Gemfile Gemfile.lock"

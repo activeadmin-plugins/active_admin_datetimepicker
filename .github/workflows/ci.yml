@@ -2,33 +2,26 @@ name: CI
 on:
   pull_request:
   push:
-    branches:
-      - master
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   test:
-    name: Tests with Ruby ${{ matrix.ruby }} Rails ${{ matrix.rails }} Active Admin ${{ matrix.activeadmin }}
+    name: Ruby ${{ matrix.ruby }} / Rails ${{ matrix.rails }} / AA ${{ matrix.activeadmin }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        ruby:
-          - '3.0.0'
-          - '3.1.0'
-          - '3.2.0'
-          - '3.3.0'
-        rails:
-          - '6.1.0'
-          - '7.0.0'
-          - '7.1.0'
-        activeadmin:
-          - '2.14.0'
-          - '3.0.0'
-          - '3.1.0'
-          - '3.2.0'
+        ruby: ['3.2', '3.3', '3.4']
+        rails: ['7.1.0', '7.2.0', '8.0.0']
+        activeadmin: ['3.2.0', '3.3.0', '3.4.0', '3.5.1']
         exclude:
-          - rails: '7.1.0'
-            activeadmin: '2.14.0'
-          - rails: '7.1.0'
-            activeadmin: '3.0.0'
+          - rails: '8.0.0'
+            activeadmin: '3.2.0'
     env:
       RAILS: ${{ matrix.rails }}
       AA: ${{ matrix.activeadmin }}
@@ -37,8 +30,62 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Run tests
+        run: bundle exec rspec spec
+
+      - name: Generate badge.json
+        if: matrix.ruby == '3.4' && matrix.rails == '8.0.0' && matrix.activeadmin == '3.5.1'
         run: |
-          gem install bundler -v '< 2'
-          bundle install
-          bundle exec rspec spec
+          LAST_RUN="coverage/.last_run.json"
+          if [ ! -f "$LAST_RUN" ]; then
+            mkdir -p badge
+            echo '{"schemaVersion":1,"label":"coverage","message":"unknown","color":"lightgrey"}' > badge/badge.json
+            exit 0
+          fi
+          PERCENT=$(ruby -rjson -e "puts JSON.parse(File.read('$LAST_RUN')).dig('result','line').round(1)")
+          PERCENT_NUM=$(ruby -rjson -e "puts JSON.parse(File.read('$LAST_RUN')).dig('result','line')")
+          if ruby -e "exit(($PERCENT_NUM >= 90) ? 0 : 1)"; then COLOR="brightgreen"
+          elif ruby -e "exit(($PERCENT_NUM >= 75) ? 0 : 1)"; then COLOR="green"
+          elif ruby -e "exit(($PERCENT_NUM >= 60) ? 0 : 1)"; then COLOR="yellow"
+          else COLOR="red"; fi
+          mkdir -p badge
+          echo "{\"schemaVersion\":1,\"label\":\"coverage\",\"message\":\"${PERCENT}%\",\"color\":\"${COLOR}\"}" > badge/badge.json
+
+      - name: Upload badge artifact
+        if: matrix.ruby == '3.4' && matrix.rails == '8.0.0' && matrix.activeadmin == '3.5.1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-badge
+          path: badge
+
+  deploy-coverage:
+    needs: test
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Download coverage badge
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-badge
+          path: .
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

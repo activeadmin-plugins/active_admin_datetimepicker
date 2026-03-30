@@ -1,5 +1,15 @@
 require 'spec_helper'
 
+def pick_date(input_selector, date_num)
+  page.find(input_selector).click
+  sleep 0.3
+  picker = page.find('.xdsoft_datetimepicker', visible: true)
+  picker.find(".xdsoft_calendar td.xdsoft_date[data-date=\"#{date_num}\"]", match: :first).click
+  sleep 0.2
+  picker.find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
+  sleep 0.2
+end
+
 describe 'authors index', type: :feature, js: true do
   before do
     add_author_resource
@@ -12,19 +22,8 @@ describe 'authors index', type: :feature, js: true do
 
     context 'filter by Date column' do
       before do
-        page.find('input#q_birthday_gteq').click
-
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_calendar td.xdsoft_date[data-date="1"]').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
-
-        page.find('input#q_birthday_lteq').click
-
-        page.find('.xdsoft_datetimepicker', visible: true)
-          .find('.xdsoft_calendar td.xdsoft_date[data-date="20"]').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
+        pick_date('input#q_birthday_gteq', 1)
+        pick_date('input#q_birthday_lteq', 20)
       end
 
       it 'can set date from/to' do
@@ -55,21 +54,8 @@ describe 'authors index', type: :feature, js: true do
                        last_name: "from-the-future",
                        created_at: (Time.now.change(day: 20) + 2.hours).to_formatted_s(:db))
 
-        # chose 01 and 20 day of the current month
-
-        page.find('input#q_created_at_gteq_datetime_picker').click
-
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_calendar td.xdsoft_date[data-date="1"]').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
-
-        page.find('input#q_created_at_lteq_datetime_picker').click
-
-        page.find('.xdsoft_datetimepicker', visible: true)
-          .find('.xdsoft_calendar td.xdsoft_date[data-date="20"]').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
+        pick_date('input#q_created_at_gteq_datetime_picker', 1)
+        pick_date('input#q_created_at_lteq_datetime_picker', 20)
 
         @value_from = page.find('#q_created_at_gteq_datetime_picker').value
         @value_to = page.find('#q_created_at_lteq_datetime_picker').value
@@ -99,18 +85,8 @@ describe 'authors index', type: :feature, js: true do
         Author.create!(name: 'Ron', last_name: 'Two', updated_at: (Time.now.change(day: 20) - 1.hour).to_formatted_s(:db))
         Author.create!(name: 'Rey', last_name: 'future', updated_at: Time.now.change(day: 21).to_formatted_s(:db))
 
-        # chose 01 and 20 day of the current month
-        page.find('input#q_last_seen_at_gteq_datetime_picker').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_calendar td.xdsoft_date[data-date="1"]').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
-
-        page.find('input#q_last_seen_at_lteq_datetime_picker').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_calendar td.xdsoft_date[data-date="20"]').click
-        page.find('.xdsoft_datetimepicker', visible: true)
-            .find('.xdsoft_timepicker.active .xdsoft_time.xdsoft_current').click
+        pick_date('input#q_last_seen_at_gteq_datetime_picker', 1)
+        pick_date('input#q_last_seen_at_lteq_datetime_picker', 20)
 
         @value_from = page.find('#q_last_seen_at_gteq_datetime_picker').value
         @value_to = page.find('#q_last_seen_at_lteq_datetime_picker').value
