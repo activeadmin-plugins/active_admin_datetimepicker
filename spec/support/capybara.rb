@@ -1,14 +1,8 @@
+require 'capybara/cuprite'
+
 Capybara.server = :webrick
-
-Capybara.configure do |config|
-  config.match = :prefer_exact
+Capybara.register_driver :cuprite do |app|
+  Capybara::Cuprite::Driver.new(app, headless: true, window_size: [1280, 800])
 end
-
-Capybara.register_driver :selenium_chrome do |app|
-  options = Selenium::WebDriver::Chrome::Options.new(
-    args: %w[headless disable-gpu no-sandbox]
-  )
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
-end
-
-Capybara.javascript_driver = :selenium_chrome
+Capybara.javascript_driver = :cuprite
+Capybara.default_max_wait_time = 5
