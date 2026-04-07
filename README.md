@@ -8,7 +8,7 @@
 
 Adds XDSoft's DateTime picker as a `date_time_picker` input for forms, and `date_time_range` for filters.
 
-![ActiveAdminDatetimepicker](https://raw.githubusercontent.com/ActiveAdminPlugins/activeadmin_datetimepicker/master/screen/screen.png "ActiveAdminDatetimepicker")
+![ActiveAdminDatetimepicker](https://raw.githubusercontent.com/activeadmin-plugins/active_admin_datetimepicker/master/screen/screen.png "ActiveAdminDatetimepicker")
 
 ## Installation
 
@@ -39,7 +39,7 @@ Add the following line into `app/assets/javascripts/active_admin.js`:
 //= require active_admin_datetimepicker
 ```
 
-##### Using assets via Webpacker (or any other assets bundler) as a NPM module (Yarn package)
+##### Using assets via NPM/Yarn
 
 Execute:
 
@@ -53,7 +53,7 @@ Or add manually to `package.json`:
 
 ```
 "dependencies": {
-  "@activeadmin-plugins/active_admin_datetimepicker": "1.0.0"
+  "@activeadmin-plugins/active_admin_datetimepicker": "latest"
 }
 ```
 and execute:
@@ -121,7 +121,7 @@ See [the datetimepicker documentation for more details](http://xdsoft.net/jqplug
 
 ## Contributing
 
-1. Fork it ( https://github.com/activeadmin-plugins/activeadmin_datetimepicker/fork )
+1. Fork it ( https://github.com/activeadmin-plugins/active_admin_datetimepicker/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
