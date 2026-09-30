@@ -20,8 +20,7 @@ Gem::Specification.new do |spec|
   # reach consumers until it is named here. The reject form needs a new
   # pattern every time the repo grows one, and that is how the 529 KB README png under screen/
   # ended up published in the first place.
-  spec.files         = Dir["lib/**/*", "app/**/*", "config/**/*",
-                           "README.md", "LICENSE.txt"]
+  spec.files         = `git ls-files -z -- lib app config README.md LICENSE.txt`.split("\x0")
   spec.bindir        = "bin"
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
