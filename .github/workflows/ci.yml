@@ -16,12 +16,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.2', '3.3', '3.4']
-        rails: ['7.1.0', '7.2.0', '8.0.0']
+        ruby: ['3.3', '3.4', '4.0']
+        rails: ['8.0.0', '8.1.0']
         activeadmin: ['3.2.0', '3.3.0', '3.4.0', '3.5.1']
-        exclude:
-          - rails: '8.0.0'
-            activeadmin: '3.2.0'
     env:
       RAILS: ${{ matrix.rails }}
       AA: ${{ matrix.activeadmin }}
@@ -35,7 +32,7 @@ jobs:
         run: bundle exec rspec spec
 
       - name: Generate badge.json
-        if: matrix.ruby == '3.4' && matrix.rails == '8.0.0' && matrix.activeadmin == '3.5.1'
+        if: matrix.ruby == '4.0' && matrix.rails == '8.1.0' && matrix.activeadmin == '3.5.1'
         run: |
           LAST_RUN="coverage/.last_run.json"
           if [ ! -f "$LAST_RUN" ]; then
@@ -53,7 +50,7 @@ jobs:
           echo "{\"schemaVersion\":1,\"label\":\"coverage\",\"message\":\"${PERCENT}%\",\"color\":\"${COLOR}\"}" > badge/badge.json
 
       - name: Upload badge artifact
-        if: matrix.ruby == '3.4' && matrix.rails == '8.0.0' && matrix.activeadmin == '3.5.1'
+        if: matrix.ruby == '4.0' && matrix.rails == '8.1.0' && matrix.activeadmin == '3.5.1'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-badge

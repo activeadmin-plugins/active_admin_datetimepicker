@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/activeadmin-plugins/activeadmin_datetimepicker"
   spec.license       = "MIT"
 
-  spec.required_ruby_version = '>= 3.1.0'
+  spec.required_ruby_version = '>= 3.3'
 
   # Whitelist, not a reject list: a new directory in the repo does not
   # reach consumers until it is named here. The reject form needs a new
