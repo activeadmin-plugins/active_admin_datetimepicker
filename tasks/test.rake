@@ -6,6 +6,7 @@ task :setup do
     --skip-turbolinks
     --skip-spring
     --skip-bootsnap
+    --skip-javascript
     -m
     spec/support/rails_template.rb
   )
