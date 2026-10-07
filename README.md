@@ -118,6 +118,34 @@ ActiveAdminDatetimepicker::Base.format = "%d/%m/%Y %H:%M" # Ruby format
 
 See [the datetimepicker documentation for more details](http://xdsoft.net/jqplugins/datetimepicker/).
 
+## Theming
+
+### Accent color
+
+The upstream XDSoft stylesheet hardcodes a bright blue (`#33aaff`) on the
+selected/current day, the current time slot and "today". This gem exposes that
+color as a single SCSS variable so you can recolor the whole picker without
+`!important` overrides. Set it **before** importing the gem; the default keeps
+the original blue, so existing apps are unaffected:
+
+```scss
+$aa-datetimepicker-accent-color: #38678b; // your brand color
+@import "active_admin_datetimepicker";
+```
+
+### Dark mode
+
+The picker follows the host's dark theme using the same triggers as
+[`active_admin_theme`](https://github.com/activeadmin-plugins/active_admin_theme):
+the OS `prefers-color-scheme: dark` preference and an explicit
+`html[data-theme="dark"]`. Under either, the picker adopts XDSoft's built-in
+`.xdsoft_dark` skin (its orange current/today, dark surfaces). A page pinned
+with `html[data-theme="light"]` always stays light. No configuration is needed;
+it works out of the box once the gem's stylesheet is imported.
+
+Note: in dark mode the current/today cells use XDSoft's built-in dark skin
+colors, not `$aa-datetimepicker-accent-color`.
+
 
 ## Contributing
 
