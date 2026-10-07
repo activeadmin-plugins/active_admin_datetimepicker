@@ -45,3 +45,122 @@ div.xdsoft_datetimepicker {
   }
 }
 
+
+// --- Configurable accent color ---------------------------------------------
+// Upstream xdsoft hardcodes a bright blue (#33aaff) on the selected/current day,
+// the current time slot and "today". There is no vendor variable for it, so host
+// apps used to resort to !important overrides. Expose it as a single SCSS
+// variable instead: set it before importing this gem to recolor the whole
+// picker. The default reproduces the original blue, so existing apps see no
+// change unless they opt in.
+$aa-datetimepicker-accent-color: #33aaff !default;
+
+div.xdsoft_datetimepicker {
+  .xdsoft_label > .xdsoft_select > div > .xdsoft_option.xdsoft_current,
+  .xdsoft_calendar td.xdsoft_current,
+  .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current {
+    background: $aa-datetimepicker-accent-color;
+  }
+
+  // "today" is a text color, not a fill
+  .xdsoft_calendar td.xdsoft_today {
+    color: $aa-datetimepicker-accent-color;
+  }
+
+  .xdsoft_calendar td.xdsoft_current.xdsoft_disabled:hover,
+  .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current.xdsoft_disabled:hover {
+    background: $aa-datetimepicker-accent-color !important;
+  }
+}
+
+
+// --- Dark mode -------------------------------------------------------------
+// Follow the host's dark theme using the same triggers active_admin_theme uses:
+// the OS `prefers-color-scheme` preference (unless the page is pinned light) and
+// an explicit `html[data-theme="dark"]`. Rather than invent new dark colors we
+// reuse xdsoft's own built-in `.xdsoft_dark` skin, re-scoped onto
+// `.xdsoft_datetimepicker` directly (the picker is appended to <body>, so it can
+// never carry the `.xdsoft_dark` class on its own). A `[data-theme="light"]`
+// page always stays light.
+@mixin aa-datetimepicker-dark {
+  .xdsoft_datetimepicker {
+    box-shadow: 0 5px 15px -5px rgba(255, 255, 255, 0.506);
+    background: #000;
+    border-bottom: 1px solid #444;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-top: 1px solid #333;
+    color: #ccc;
+
+    .xdsoft_timepicker .xdsoft_time_box {
+      border: 1px solid #333;
+      border-bottom: 1px solid #222;
+    }
+    .xdsoft_timepicker .xdsoft_time_box > div > div {
+      background: #0a0a0a;
+      border-top: 1px solid #222;
+      color: #999;
+    }
+
+    .xdsoft_label {
+      background-color: #000;
+    }
+    .xdsoft_label > .xdsoft_select {
+      border: 1px solid #333;
+      background: #000;
+    }
+    .xdsoft_label > .xdsoft_select > div > .xdsoft_option:hover {
+      color: #000;
+      background: #007fff;
+    }
+    .xdsoft_label > .xdsoft_select > div > .xdsoft_option.xdsoft_current {
+      background: #cc5500;
+      box-shadow: #b03e00 0 1px 3px 0 inset;
+      color: #000;
+    }
+
+    .xdsoft_calendar td,
+    .xdsoft_calendar th {
+      background: #0a0a0a;
+      border: 1px solid #222;
+      color: #999;
+    }
+    .xdsoft_calendar th {
+      background: #0e0e0e;
+      color: #666;
+    }
+    .xdsoft_calendar td.xdsoft_today {
+      color: #cc5500;
+    }
+    .xdsoft_calendar td.xdsoft_default,
+    .xdsoft_calendar td.xdsoft_current,
+    .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current {
+      background: #cc5500;
+      box-shadow: #b03e00 0 1px 3px 0 inset;
+      color: #000;
+    }
+    .xdsoft_calendar td:hover,
+    .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+      color: #000 !important;
+      background: #007fff !important;
+    }
+
+    .xdsoft_scrollbar > .xdsoft_scroller {
+      background: #333 !important;
+    }
+
+    .xdsoft_copyright {
+      color: #333 !important;
+      a { color: #111 !important; }
+      a:hover { color: #555 !important; }
+    }
+  }
+}
+
+// OS preference, unless the user explicitly chose light
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) { @include aa-datetimepicker-dark; }
+}
+// Explicit user choice always wins
+html[data-theme="dark"] { @include aa-datetimepicker-dark; }
+
