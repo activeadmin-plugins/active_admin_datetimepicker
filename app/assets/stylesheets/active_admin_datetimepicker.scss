@@ -49,27 +49,48 @@ div.xdsoft_datetimepicker {
 // --- Configurable accent color ---------------------------------------------
 // Upstream xdsoft hardcodes a bright blue (#33aaff) on the selected/current day,
 // the current time slot and "today". There is no vendor variable for it, so host
-// apps used to resort to !important overrides. Expose it as a single SCSS
-// variable instead: set it before importing this gem to recolor the whole
-// picker. The default reproduces the original blue, so existing apps see no
-// change unless they opt in.
+// apps used to resort to !important overrides. Expose it two ways:
+//
+//   * `$aa-datetimepicker-accent-color` — a compile-time SCSS variable, set it
+//     before importing this gem.
+//   * `--aa-datetimepicker-accent` — a runtime CSS custom property. Prefer this
+//     in sprockets apps: a SCSS variable set in the host manifest does NOT reach
+//     this gem's partial across a sprockets `@import` (separate compilation
+//     scope), whereas a CSS custom property flows through the cascade regardless.
+//     Set it on `:root` (or `html[data-theme=...]` for per-mode values).
+//
+// Both default to the original blue, so existing apps see no change unless they
+// opt in. The CSS property wins when set; otherwise it falls back to the SCSS
+// variable's value.
 $aa-datetimepicker-accent-color: #33aaff !default;
+$-aa-dtp-accent: var(--aa-datetimepicker-accent, #{$aa-datetimepicker-accent-color});
+
+// Dark-mode surface/text/border, same idea as the accent: runtime CSS custom
+// properties so a themed host can bind the picker to its own dark palette
+// (e.g. `--aa-datetimepicker-surface: var(--aa-surface)`), with fallbacks that
+// are a soft dark rather than pure black so the picker is usable out of the box.
+$-aa-dtp-surface:   var(--aa-datetimepicker-surface, #1f242a);
+$-aa-dtp-surface-2: var(--aa-datetimepicker-surface-2, #262c33);
+$-aa-dtp-text:      var(--aa-datetimepicker-text, #cfd3d8);
+$-aa-dtp-text-muted: var(--aa-datetimepicker-text-muted, #8a9099);
+$-aa-dtp-border:    var(--aa-datetimepicker-border, #3a4048);
+$-aa-dtp-hover:     var(--aa-datetimepicker-hover, #2e353d);
 
 div.xdsoft_datetimepicker {
   .xdsoft_label > .xdsoft_select > div > .xdsoft_option.xdsoft_current,
   .xdsoft_calendar td.xdsoft_current,
   .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current {
-    background: $aa-datetimepicker-accent-color;
+    background: $-aa-dtp-accent;
   }
 
   // "today" is a text color, not a fill
   .xdsoft_calendar td.xdsoft_today {
-    color: $aa-datetimepicker-accent-color;
+    color: $-aa-dtp-accent;
   }
 
   .xdsoft_calendar td.xdsoft_current.xdsoft_disabled:hover,
   .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current.xdsoft_disabled:hover {
-    background: $aa-datetimepicker-accent-color !important;
+    background: $-aa-dtp-accent !important;
   }
 }
 
@@ -84,75 +105,85 @@ div.xdsoft_datetimepicker {
 // page always stays light.
 @mixin aa-datetimepicker-dark {
   .xdsoft_datetimepicker {
-    box-shadow: 0 5px 15px -5px rgba(255, 255, 255, 0.506);
-    background: #000;
-    border-bottom: 1px solid #444;
-    border-left: 1px solid #333;
-    border-right: 1px solid #333;
-    border-top: 1px solid #333;
-    color: #ccc;
+    box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.6);
+    background: $-aa-dtp-surface;
+    border: 1px solid $-aa-dtp-border;
+    color: $-aa-dtp-text;
 
     .xdsoft_timepicker .xdsoft_time_box {
-      border: 1px solid #333;
-      border-bottom: 1px solid #222;
+      border: 1px solid $-aa-dtp-border;
     }
     .xdsoft_timepicker .xdsoft_time_box > div > div {
-      background: #0a0a0a;
-      border-top: 1px solid #222;
-      color: #999;
+      background: $-aa-dtp-surface;
+      border-top: 1px solid $-aa-dtp-border;
+      color: $-aa-dtp-text;
     }
 
     .xdsoft_label {
-      background-color: #000;
+      background-color: $-aa-dtp-surface;
     }
     .xdsoft_label > .xdsoft_select {
-      border: 1px solid #333;
-      background: #000;
+      border: 1px solid $-aa-dtp-border;
+      background: $-aa-dtp-surface;
     }
     .xdsoft_label > .xdsoft_select > div > .xdsoft_option:hover {
-      color: #000;
-      background: #007fff;
+      color: $-aa-dtp-text;
+      background: $-aa-dtp-hover;
     }
     .xdsoft_label > .xdsoft_select > div > .xdsoft_option.xdsoft_current {
-      background: #cc5500;
-      box-shadow: #b03e00 0 1px 3px 0 inset;
-      color: #000;
+      background: $-aa-dtp-accent;
+      box-shadow: none;
+      color: #fff;
     }
 
     .xdsoft_calendar td,
     .xdsoft_calendar th {
-      background: #0a0a0a;
-      border: 1px solid #222;
-      color: #999;
+      background: $-aa-dtp-surface;
+      border: 1px solid $-aa-dtp-border;
+      color: $-aa-dtp-text;
     }
     .xdsoft_calendar th {
-      background: #0e0e0e;
-      color: #666;
+      background: $-aa-dtp-surface-2;
+      color: $-aa-dtp-text-muted;
+    }
+    .xdsoft_calendar td.xdsoft_other_month,
+    .xdsoft_calendar td.xdsoft_disabled {
+      color: $-aa-dtp-text-muted;
     }
     .xdsoft_calendar td.xdsoft_today {
-      color: #cc5500;
+      color: $-aa-dtp-accent;
     }
     .xdsoft_calendar td.xdsoft_default,
     .xdsoft_calendar td.xdsoft_current,
     .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current {
-      background: #cc5500;
-      box-shadow: #b03e00 0 1px 3px 0 inset;
-      color: #000;
+      background: $-aa-dtp-accent;
+      box-shadow: none;
+      color: #fff;
     }
-    .xdsoft_calendar td:hover,
-    .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
-      color: #000 !important;
-      background: #007fff !important;
+    .xdsoft_calendar td:hover:not(.xdsoft_current),
+    .xdsoft_timepicker .xdsoft_time_box > div > div:hover:not(.xdsoft_current) {
+      color: $-aa-dtp-text !important;
+      background: $-aa-dtp-hover !important;
     }
 
     .xdsoft_scrollbar > .xdsoft_scroller {
-      background: #333 !important;
+      background: $-aa-dtp-border !important;
+    }
+
+    // Month prev/next, the "today" home button and the time-column up/down
+    // scrollers are a dark PNG sprite with no vendor variable — on the dark
+    // surface they disappear. Invert so the arrows read as light icons. The
+    // time scrollers also carry .xdsoft_prev/.xdsoft_next, so they're covered.
+    .xdsoft_prev,
+    .xdsoft_next,
+    .xdsoft_today_button {
+      filter: invert(1);
     }
 
     .xdsoft_copyright {
-      color: #333 !important;
-      a { color: #111 !important; }
-      a:hover { color: #555 !important; }
+      color: $-aa-dtp-text-muted !important;
+      a { color: $-aa-dtp-text !important; }
+      a:hover { color: $-aa-dtp-text-muted !important; }
     }
   }
 }
