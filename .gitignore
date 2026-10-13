@@ -5,3 +5,8 @@ spec/rails/rails-*
 pkg
 .bundle
 vendor/bundl
+
+# Built by the `prepare`/`prepublishOnly` npm scripts (copied from app/assets);
+# generated on install, never committed.
+/src/
+*.bak
