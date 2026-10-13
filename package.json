@@ -25,7 +25,7 @@
     "!src/*.bak"
   ],
   "scripts": {
-    "prepare_src": "rm -rf src && cp -R app/assets/javascripts/ src && cp -R app/assets/stylesheets/ src",
+    "prepare_src": "rm -rf src && mkdir -p src && cp -R app/assets/javascripts/. src/ && cp -R app/assets/stylesheets/. src/",
     "prepare_import": "sed -i.bak 1s/'\\/\\/\\= require vendor\\/jquery.datetimepicker.full'/\"import '.\\/vendor\\/jquery.datetimepicker.full';\"/ src/active_admin_datetimepicker.js",
     "prepare": "npm run prepare_src && npm run prepare_import",
     "prepublishOnly": "npm run prepare_src && npm run prepare_import"

@@ -88,6 +88,12 @@ div.xdsoft_datetimepicker {
     color: $-aa-dtp-accent;
   }
 
+  // When today is also the selected cell, its accent fill needs light text
+  // (otherwise accent-on-accent hides the number).
+  .xdsoft_calendar td.xdsoft_today.xdsoft_current {
+    color: #fff;
+  }
+
   .xdsoft_calendar td.xdsoft_current.xdsoft_disabled:hover,
   .xdsoft_timepicker .xdsoft_time_box > div > div.xdsoft_current.xdsoft_disabled:hover {
     background: $-aa-dtp-accent !important;
