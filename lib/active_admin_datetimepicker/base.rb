@@ -59,11 +59,20 @@ module ActiveAdminDatetimepicker
     # A date column gets a date-only control; datetime columns and
     # ransackers without a column get a date and time control.
     def native_input_type
-      column && column.type == :date ? 'date' : 'datetime-local'
+      date_column? ? 'date' : 'datetime-local'
     end
 
+    # Covers DB columns and attributes declared with the Attributes API.
+    def date_column?
+      return column.type == :date if column&.type
+
+      object.class.respond_to?(:attribute_types) && object.class.attribute_types[method.to_s]&.type == :date
+    end
+
+    # Stored strings are parsed as leniently as input_value does on ActiveAdmin 3,
+    # so a non-ISO value is not blanked and wiped on save.
     def native_input_value(input_name = nil)
-      format_native(object.public_send(input_name || method))
+      format_native(object.public_send(input_name || method), strict: false)
     end
 
     protected
@@ -81,8 +90,8 @@ module ActiveAdminDatetimepicker
     def native_picker_attributes
       picker_options = datetime_picker_options.transform_keys { |k| k.to_s.camelcase(:lower) }
       attributes = {}
-      min = format_native(picker_options['minDateTime']) || format_native(picker_options['minDate'])
-      max = format_native(picker_options['maxDateTime']) || native_max_date(picker_options['maxDate'])
+      min = format_native(picker_options['minDateTime']) || native_day_bound(picker_options['minDate'], '00:00')
+      max = format_native(picker_options['maxDateTime']) || native_day_bound(picker_options['maxDate'], '23:59')
       attributes[:min] = min if min
       attributes[:max] = max if max
       step = picker_options['step'].to_i
@@ -91,22 +100,24 @@ module ActiveAdminDatetimepicker
       attributes
     end
 
-    # xdsoft's maxDate allows the whole last day, so a datetime-local max ends at 23:59.
-    def native_max_date(value)
-      max = format_native(value)
-      max && native_input_type == 'datetime-local' ? "#{max[0, 10]}T23:59" : max
+    # xdsoft's minDate and maxDate are whole days, so a datetime-local bound
+    # starts at 00:00 of the first day and ends at 23:59 of the last.
+    def native_day_bound(value, time)
+      bound = format_native(value)
+      bound && native_input_type == 'datetime-local' ? "#{bound[0, 10]}T#{time}" : bound
     end
 
-    def format_native(value)
+    def format_native(value, strict: true)
       value = value.call if value.respond_to?(:call)
       return nil if value.blank?
-      unless value.respond_to?(:strftime)
+      if value.respond_to?(:strftime)
+        # Times are shown in the app's zone, like the record values.
+        value = value.in_time_zone if value.is_a?(Time) || value.is_a?(DateTime)
+      else
         # Relative xdsoft values such as "+3D" have no native equivalent.
-        return nil unless value.to_s.match?(%r{\A\d{4}[-/]\d{1,2}[-/]\d{1,2}})
+        return nil if strict && !value.to_s.match?(%r{\A\d{4}[-/]\d{1,2}[-/]\d{1,2}})
         value = DateTime.parse(value.to_s)
       end
-      # A Time option is shown in the app's zone, like the record values.
-      value = value.in_time_zone if value.is_a?(Time)
       value.strftime(NATIVE_FORMATS.fetch(native_input_type))
     rescue ArgumentError
       nil

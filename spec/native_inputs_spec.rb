@@ -68,6 +68,42 @@ describe 'native inputs on ActiveAdmin 4', type: :feature, aa: 4 do
     end
   end
 
+  context 'input helpers' do
+    let(:form_class) do
+      Class.new do
+        include ActiveModel::Model
+        include ActiveModel::Attributes
+        attribute :due_on, :date
+        attribute :starts_at, :string
+      end
+    end
+
+    def input_for(method, object, options = {})
+      ActiveAdmin::Inputs::DateTimePickerInput.new(Object.new, Object.new, object, 'form', method, options)
+    end
+
+    it 'renders a date control for a date attribute without a column' do
+      input = input_for(:due_on, form_class.new(due_on: Date.new(2024, 1, 31)))
+      expect(input.native_input_type).to eq 'date'
+      expect(input.native_input_value).to eq '2024-01-31'
+    end
+
+    it 'keeps a stored non-ISO string value' do
+      input = input_for(:starts_at, form_class.new(starts_at: '31.01.2024 10:00'))
+      expect(input.native_input_value).to eq '2024-01-31T10:00'
+    end
+
+    it 'starts a Time min_date at midnight and shows a DateTime limit in the app zone' do
+      Time.use_zone('Berlin') do
+        input = input_for(:starts_at, form_class.new, datepicker_options: {
+          min_date: Time.zone.parse('2024-01-10 14:32'),
+          max_date_time: DateTime.new(2024, 1, 20, 12, 0, 0, '+00:00')
+        })
+        expect(input.send(:native_picker_attributes)).to include(min: '2024-01-10T00:00', max: '2024-01-20T13:00')
+      end
+    end
+  end
+
   context 'form input with relative xdsoft limits' do
     before { register_author_with_datetime_form(datepicker_options: { min_date: '+3D' }) }
 
