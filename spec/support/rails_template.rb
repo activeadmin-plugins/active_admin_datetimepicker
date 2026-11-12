@@ -1,9 +1,13 @@
 # Rails template to build the sample app for specs
 
+aa_v4 = Gem.loaded_specs['activeadmin'].version >= Gem::Version.new('4.0.0.beta1')
+
 # Ensure Sprockets manifest exists (required by Rails 8+)
-FileUtils.mkdir_p("app/assets/config")
-File.write("app/assets/config/manifest.js",
-  "//= link_directory ../javascripts .js\n//= link_directory ../stylesheets .css\n")
+unless aa_v4
+  FileUtils.mkdir_p("app/assets/config")
+  File.write("app/assets/config/manifest.js",
+    "//= link_directory ../javascripts .js\n//= link_directory ../stylesheets .css\n")
+end
 
 generate :model, 'author name:string{10}:uniq last_name:string birthday:date --force'
 generate :model, 'post title:string:uniq body:text author:references --force'
@@ -62,16 +66,19 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 generate :'active_admin:install --skip-users'
 generate :'formtastic:install'
 
-# Install active_admin_datetimepicker assets
-inject_into_file "app/assets/stylesheets/active_admin.scss" do
-  "@import \"active_admin_datetimepicker\";\n"
+# Install active_admin_datetimepicker assets (ActiveAdmin 4 needs none: native inputs)
+unless aa_v4
+  inject_into_file "app/assets/stylesheets/active_admin.scss" do
+    "@import \"active_admin_datetimepicker\";\n"
+  end
+
+  inject_into_file "app/assets/javascripts/active_admin.js" do
+    "//= require active_admin_datetimepicker\n"
+  end
 end
 
-inject_into_file "app/assets/javascripts/active_admin.js" do
-  "//= require active_admin_datetimepicker\n"
-end
-
-run "rm -rf test"
+# rspec-rails generates model specs that the suite would otherwise pick up
+run "rm -rf test spec"
 route "root :to => 'admin/dashboard#index'"
 rake "db:migrate"
 
