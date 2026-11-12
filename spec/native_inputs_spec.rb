@@ -63,7 +63,7 @@ describe 'native inputs on ActiveAdmin 4', type: :feature, aa: 4 do
 
       input = find('#author_created_at')
       expect(input[:min]).to eq '2024-01-01T00:00'
-      expect(input[:max]).to eq '2024-12-31T00:00'
+      expect(input[:max]).to eq '2024-12-31T23:59'
       expect(input[:step]).to eq '900'
     end
   end
