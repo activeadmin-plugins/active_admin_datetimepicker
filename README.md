@@ -8,6 +8,8 @@
 
 Adds XDSoft's DateTime picker as a `date_time_picker` input for forms, and `date_time_range` for filters.
 
+On ActiveAdmin 4 the same inputs render the browser's native date and time controls instead; see [ActiveAdmin 4](#activeadmin-4).
+
 ![ActiveAdminDatetimepicker](https://raw.githubusercontent.com/activeadmin-plugins/active_admin_datetimepicker/master/screen/screen.png "ActiveAdminDatetimepicker")
 
 ## Installation
@@ -88,6 +90,36 @@ The `date_time_picker` input accepts many of the options available to the standa
     f.input :ends_at,   as: :date_time_picker, datepicker_options: { min_date: 3.days.ago.to_date, max_date: "+1W +5D" }
   end
 ```
+
+## ActiveAdmin 4
+
+ActiveAdmin 4 ships without jQuery and Sprockets, so on ActiveAdmin 4 the gem
+does not load the XDSoft picker. The `date_time_picker` input and the
+`date_time_range` filter render native `<input type="datetime-local">` fields
+(`type="date"` for a `date` column), styled by ActiveAdmin itself. There is no
+JavaScript or CSS to install: skip the Sprockets and NPM steps above.
+
+Values use the HTML format, `YYYY-MM-DDTHH:MM` (`YYYY-MM-DD` for date fields).
+`ActiveAdminDatetimepicker::Base.format` applies to ActiveAdmin 3 only.
+
+Only these `datepicker_options` (and `default_datetime_picker_options`) have a
+native equivalent and are applied on ActiveAdmin 4. Everything else is ignored.
+
+| Option | Native attribute |
+| --- | --- |
+| `min_date`, `min_date_time` | `min` |
+| `max_date`, `max_date_time` | `max` |
+| `step` (minutes) | `step` (seconds, `datetime-local` only) |
+
+`min`/`max` must be absolute dates (a `Date`, `Time` or a string like
+`"2024-01-31"`); relative values such as `"+3D"` are dropped. An explicit
+`input_html: { min: ... }` wins over the mapped value.
+
+The markup carries `data-*` hooks for tests and other plugins:
+
+- every input: `data-datetimepicker-input`
+- the filter wrapper: `data-datetimepicker-range` (on ActiveAdmin 4 it also keeps the `filter_date_time_range` class)
+- the filter inputs: `data-datetimepicker-range-input="from"` and `"to"`
 
 ## Override behaviour in initializer
 
