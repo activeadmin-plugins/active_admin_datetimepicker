@@ -82,13 +82,19 @@ module ActiveAdminDatetimepicker
       picker_options = datetime_picker_options.transform_keys { |k| k.to_s.camelcase(:lower) }
       attributes = {}
       min = format_native(picker_options['minDateTime']) || format_native(picker_options['minDate'])
-      max = format_native(picker_options['maxDateTime']) || format_native(picker_options['maxDate'])
+      max = format_native(picker_options['maxDateTime']) || native_max_date(picker_options['maxDate'])
       attributes[:min] = min if min
       attributes[:max] = max if max
       step = picker_options['step'].to_i
       # xdsoft counts the step in minutes, the HTML attribute in seconds.
       attributes[:step] = step * 60 if step > 0 && native_input_type == 'datetime-local'
       attributes
+    end
+
+    # xdsoft's maxDate allows the whole last day, so a datetime-local max ends at 23:59.
+    def native_max_date(value)
+      max = format_native(value)
+      max && native_input_type == 'datetime-local' ? "#{max[0, 10]}T23:59" : max
     end
 
     def format_native(value)
@@ -99,6 +105,8 @@ module ActiveAdminDatetimepicker
         return nil unless value.to_s.match?(%r{\A\d{4}[-/]\d{1,2}[-/]\d{1,2}})
         value = DateTime.parse(value.to_s)
       end
+      # A Time option is shown in the app's zone, like the record values.
+      value = value.in_time_zone if value.is_a?(Time)
       value.strftime(NATIVE_FORMATS.fetch(native_input_type))
     rescue ArgumentError
       nil

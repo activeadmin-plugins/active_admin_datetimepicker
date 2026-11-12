@@ -115,6 +115,10 @@ native equivalent and are applied on ActiveAdmin 4. Everything else is ignored.
 `"2024-01-31"`); relative values such as `"+3D"` are dropped. An explicit
 `input_html: { min: ... }` wins over the mapped value.
 
+Unlike the XDSoft picker, the browser enforces `min`, `max` and `step` when the
+form is submitted. A stored value outside the range, or off the step (10:07 with
+`step: 15`), blocks the save until it is changed.
+
 The markup carries `data-*` hooks for tests and other plugins:
 
 - every input: `data-datetimepicker-input`
