@@ -39,17 +39,19 @@ module ActiveAdmin
           options = super
           value = ActiveAdminDatetimepicker.aa_v4? ? native_input_value(input_name) : input_value(input_name)
           bound = input_name == gt_input_name ? 'from' : 'to'
-          options.merge placeholder: placeholder,
-                        value: value,
-                        data: (options[:data] || {}).merge(datetimepicker_range_input: bound)
+          options.merge(
+            placeholder: placeholder,
+            value: value,
+            data: (options[:data] || {}).merge(datetimepicker_range_input: bound)
+          )
         end
 
         def gt_input_name
-          column && column.type == :date ? super : "#{method}_gteq_datetime_picker"
+          date_column? ? super : "#{method}_gteq_datetime_picker"
         end
 
         def lt_input_name
-          column && column.type == :date ? super : "#{method}_lteq_datetime_picker"
+          date_column? ? super : "#{method}_lteq_datetime_picker"
         end
 
       end
