@@ -14,7 +14,9 @@ ENV['RAILS_ENV'] = 'test'
 # Ensure the Active Admin load path is happy
 require 'rails'
 ENV['RAILS'] = Rails.version
-ENV['RAILS_ROOT'] = File.expand_path("../rails/rails-#{ENV['RAILS']}", __FILE__)
+# One test app per Rails and ActiveAdmin major: v3 and v4 apps differ in their asset setup.
+activeadmin_major = Gem.loaded_specs['activeadmin'].version.segments.first
+ENV['RAILS_ROOT'] = File.expand_path("../rails/rails-#{ENV['RAILS']}-aa#{activeadmin_major}", __FILE__)
 # Create the test app if it doesn't exists
 unless File.exist?(ENV['RAILS_ROOT'])
   system 'rake setup'
@@ -40,6 +42,8 @@ require 'support/capybara'
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
+  # Specs tagged `aa: 3` exercise the xdsoft picker, `aa: 4` the native inputs.
+  config.filter_run_excluding aa: (ActiveAdminDatetimepicker.aa_v4? ? 3 : 4)
 
   config.before(:suite) do
     ActiveRecord::Migration.maintain_test_schema!
