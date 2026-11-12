@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["fedoronchuk@gmail.com"]
 
   spec.summary       = %q{datetimepicker extension for ActiveAdmin}
-  spec.description   = %q{Integrate jQuery xdan datetimepicker plugin to ActiveAdmin}
+  spec.description   = %q{Integrate jQuery xdan datetimepicker plugin to ActiveAdmin 3, native date and time inputs on ActiveAdmin 4}
   spec.homepage      = "https://github.com/activeadmin-plugins/activeadmin_datetimepicker"
   spec.license       = "MIT"
 
@@ -25,5 +25,5 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activeadmin", ">= 3.0", "< 4.0"
+  spec.add_dependency "activeadmin", ">= 3.0", "< 5.0.0.a"
 end

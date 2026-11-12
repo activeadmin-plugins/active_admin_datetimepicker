@@ -10,7 +10,7 @@ def pick_date(input_selector, date_num)
   sleep 0.2
 end
 
-describe 'authors index', type: :feature, js: true do
+describe 'authors index', type: :feature, js: true, aa: 3 do
   before do
     add_author_resource
   end
