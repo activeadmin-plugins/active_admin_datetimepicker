@@ -102,6 +102,16 @@ describe 'native inputs on ActiveAdmin 4', type: :feature, aa: 4 do
         expect(input.send(:native_picker_attributes)).to include(min: '2024-01-10T00:00', max: '2024-01-20T13:00')
       end
     end
+
+    it 'shows a string limit with an offset in the app zone and keeps a zoneless one as written' do
+      Time.use_zone('Berlin') do
+        input = input_for(:starts_at, form_class.new, datepicker_options: {
+          min_date_time: '2024-01-10 08:00',
+          max_date_time: '2024-01-20T12:00:00Z'
+        })
+        expect(input.send(:native_picker_attributes)).to include(min: '2024-01-10T08:00', max: '2024-01-20T13:00')
+      end
+    end
   end
 
   context 'form input with relative xdsoft limits' do

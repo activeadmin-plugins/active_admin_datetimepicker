@@ -116,7 +116,10 @@ module ActiveAdminDatetimepicker
       else
         # Relative xdsoft values such as "+3D" have no native equivalent.
         return nil if strict && !value.to_s.match?(%r{\A\d{4}[-/]\d{1,2}[-/]\d{1,2}})
+        # A string with an offset names an instant; one without is local wall-clock time.
+        offset = Date._parse(value.to_s).key?(:offset)
         value = DateTime.parse(value.to_s)
+        value = value.in_time_zone if offset
       end
       value.strftime(NATIVE_FORMATS.fetch(native_input_type))
     rescue ArgumentError
