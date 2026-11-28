@@ -90,5 +90,21 @@ if ActiveAdminDatetimepicker.aa_v4?
       expect(page).to have_text('inside')
       expect(page).not_to have_text('after')
     end
+
+    # The plugin writes whole-minute steps; an app's input_html can set a finer one.
+    %w[1 any].each do |step|
+      it "keeps seconds when the input's step is #{step}", js: true do
+        page.execute_script("document.querySelectorAll('[data-datetimepicker-range-input]').forEach(input => { input.step = '#{step}' })")
+        filter = filters.filter(:created_at)
+        filter.fill_in_range(from: Time.zone.parse('2024-01-20 10:00:15'), to: '2024-01-20 12:00:00')
+
+        expect(find('#q_created_at_gteq_datetime_picker').value).to eq '2024-01-20T10:00:15'
+        expect(find('#q_created_at_lteq_datetime_picker').value).to start_with '2024-01-20T12:00'
+        expect(filter.from).to eq Time.zone.parse('2024-01-20 10:00:15')
+        expect(filter.to).to eq Time.zone.parse('2024-01-20 12:00')
+        expect(filter).to have_range('2024-01-20 10:00:15', '2024-01-20 12:00')
+        expect(filter).to have_no_range('2024-01-20 10:00', '2024-01-20 12:00', wait: 0)
+      end
+    end
   end
 end
