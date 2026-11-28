@@ -185,13 +185,19 @@ colors, not `$aa-datetimepicker-accent-color`.
 
 ## Page objects
 
-Page objects for tests, built on [active_admin_page_objects](https://github.com/activeadmin-plugins/active_admin_page_objects) 2.x. They are optional and need ActiveAdmin 4. Add that gem to your test group and require the file from your spec helper:
+Page objects for tests, built on [active_admin_page_objects](https://github.com/activeadmin-plugins/active_admin_page_objects) 2.x. They are optional and need ActiveAdmin 4. 2.x is not on RubyGems yet, so add it to your test group from GitHub:
+
+```ruby
+gem 'active_admin_page_objects', github: 'activeadmin-plugins/active_admin_page_objects', branch: 'restructure-vanilla-v4'
+```
+
+Then require the file from your spec helper:
 
 ```ruby
 require 'active_admin_datetimepicker/page_objects'
 ```
 
-`filters.filter(:created_at)` then returns a `DateTimeRangeFilter` for a `date_time_range` filter, with no declaration. Remove any override of `filter_range_from` and `filter_range_to` you added for these inputs: the filter finds its inputs by `data-datetimepicker-range-input`, and the gem's own range filter is untouched.
+`filters.filter(:created_at)` then returns a `DateTimeRangeFilter` for a `date_time_range` filter, with no declaration. A spec that declares this filter as `ActiveAdminPageObjects::DateRangeFilter` now raises `DeclaredClassMismatch`: declare `ActiveAdminDatetimepicker::PageObjects::DateTimeRangeFilter` instead, or drop the declaration. Remove any override of `filter_range_from` and `filter_range_to` you added for these inputs: the filter finds its inputs by `data-datetimepicker-range-input`, and the gem's own range filter is untouched.
 
 ```ruby
 filter = index.filters.filter(:created_at)
