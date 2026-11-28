@@ -24,4 +24,9 @@ group :test do
   gem 'capybara'
   gem 'cuprite'
   gem 'webrick', require: false
+
+  # The page objects (active_admin_datetimepicker/page_objects) need it, and it needs ActiveAdmin 4.
+  if Gem::Version.new(activeadmin_version) >= Gem::Version.new('4.0.0.beta1')
+    gem 'active_admin_page_objects', github: 'activeadmin-plugins/active_admin_page_objects', ref: '8ec1677d4118559af117421fbf6576cdd5e33721', require: false
+  end
 end

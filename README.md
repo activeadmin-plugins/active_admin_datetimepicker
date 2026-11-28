@@ -183,6 +183,35 @@ Note: in dark mode the current/today cells use XDSoft's built-in dark skin
 colors, not `$aa-datetimepicker-accent-color`.
 
 
+## Page objects
+
+Page objects for tests, built on [active_admin_page_objects](https://github.com/activeadmin-plugins/active_admin_page_objects) 2.x. They are optional and need ActiveAdmin 4. 2.x is not on RubyGems yet, so add it to your test group from GitHub:
+
+```ruby
+gem 'active_admin_page_objects', github: 'activeadmin-plugins/active_admin_page_objects', branch: 'restructure-vanilla-v4'
+```
+
+Then require the file from your spec helper:
+
+```ruby
+require 'active_admin_datetimepicker/page_objects'
+```
+
+`filters.filter(:created_at)` then returns a `DateTimeRangeFilter` for a `date_time_range` filter, with no declaration. A spec that declares this filter as `ActiveAdminPageObjects::DateRangeFilter` now raises `DeclaredClassMismatch`: declare `ActiveAdminDatetimepicker::PageObjects::DateTimeRangeFilter` instead, or drop the declaration. Remove any override of `filter_range_from` and `filter_range_to` you added for these inputs: the filter finds its inputs by `data-datetimepicker-range-input`, and the gem's own range filter is untouched.
+
+```ruby
+filter = index.filters.filter(:created_at)
+filter.fill_in_range(from: Time.zone.parse('2024-01-20 10:00'), to: '2024-01-20 12:00')
+index.filters.submit
+
+filter.from # => Sat, 20 Jan 2024 10:00:00 UTC +00:00
+filter.to
+filter.range # => [from, to]
+expect(filter).to have_range('2024-01-20 10:00', '2024-01-20 12:00')
+```
+
+`fill_in_range` takes a `Time`, a `Date` (midnight) or a `String` that `Time.zone` parses, and nil or `""` clears that end. The value is written in the format the input takes: `YYYY-MM-DDTHH:MM` for `datetime-local`, `YYYY-MM-DD` for a date column. The readers return a `Time` in the app zone, midnight for a date column.
+
 ## Contributing
 
 1. Fork it ( https://github.com/activeadmin-plugins/active_admin_datetimepicker/fork )
